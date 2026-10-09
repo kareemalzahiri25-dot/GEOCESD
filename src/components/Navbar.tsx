@@ -92,9 +92,8 @@ export const Navbar: React.FC<NavbarProps> = ({ activePage, onNavigate }) => {
           <div className="flex items-center gap-3 shrink-0">
             <button
               onClick={() => handleNavClick('simulasi')}
-              className="inline-flex items-center gap-2 px-4 py-2 text-xs sm:text-sm font-semibold text-white bg-emerald-700 hover:bg-emerald-800 rounded-lg shadow-xs transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 whitespace-nowrap cursor-pointer active:scale-[0.98]"
+              className="px-4 py-2 text-xs sm:text-sm font-semibold text-white bg-emerald-700 hover:bg-emerald-800 rounded-lg shadow-xs transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 whitespace-nowrap cursor-pointer active:scale-[0.98]"
             >
-              <Sparkles className="w-4 h-4 text-emerald-200" />
               <span>Mulai Simulasi</span>
             </button>
 

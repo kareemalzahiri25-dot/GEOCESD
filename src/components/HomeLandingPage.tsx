@@ -74,7 +74,7 @@ export const HomeLandingPage: React.FC<HomeLandingPageProps> = ({ onNavigate }) 
               </h1>
 
               <p className="mt-5 text-base sm:text-lg text-slate-600 leading-relaxed max-w-2xl">
-                SILICA2CON adalah gagasan <strong className="text-slate-900 font-semibold">Evidence-Based Decision Support System (DSS)</strong> untuk mengevaluasi kelayakan residu silika PLTP Dieng menjadi produk paving block mutu tinggi berstandar SNI melalui prinsip evaluasi berjenjang <span className="text-emerald-700 font-semibold underline decoration-emerald-300 underline-offset-4">Gate-First, Rank-Second</span>.
+                GEOCEDS adalah gagasan <strong className="text-slate-900 font-semibold">Evidence-Based Decision Support System (DSS)</strong> untuk mengevaluasi kelayakan residu silika PLTP Dieng menjadi produk paving block mutu tinggi berstandar SNI melalui prinsip evaluasi berjenjang <span className="text-emerald-700 font-semibold underline decoration-emerald-300 underline-offset-4">Gate-First, Rank-Second</span>.
               </p>
 
               {/* Action Buttons */}
@@ -128,7 +128,7 @@ export const HomeLandingPage: React.FC<HomeLandingPageProps> = ({ onNavigate }) 
 
                   <div className="mt-4">
                     <h2 className="text-base font-bold text-white leading-snug">
-                      SILICA2CON Decision Architecture
+                      GEOCEDS Decision Architecture
                     </h2>
                     <p className="mt-2 text-xs text-slate-300 leading-relaxed">
                       Sistem mengintegrasikan identitas material, basis formulasi normal, neraca massa, persyaratan teknis SNI, serta skrining ekonomi & lingkungan dalam satu alur keputusan yang dapat ditelusuri.
@@ -226,7 +226,7 @@ export const HomeLandingPage: React.FC<HomeLandingPageProps> = ({ onNavigate }) 
               Dari Persoalan Operasional Hingga Kerangka Keputusan Teruji
             </h2>
             <p className="mt-4 text-base text-slate-600 leading-relaxed">
-              Berikut adalah ringkasan komprehensif dari essay ilmiah yang diajukan pada kompetisi GEMASTE 2026, merangkum fenomena lapangan panas bumi Dieng, research gap yang dihadapi, hingga solusi konseptual arsitektur SILICA2CON.
+              Berikut adalah ringkasan komprehensif dari riset ilmiah kami, merangkum fenomena lapangan panas bumi Dieng, research gap yang dihadapi, hingga solusi konseptual arsitektur GEOCEDS.
             </p>
           </div>
 

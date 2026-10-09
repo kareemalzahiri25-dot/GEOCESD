@@ -58,14 +58,11 @@ export const TeamSection: React.FC = () => {
     <section id="tim-kami" className="py-20 bg-slate-50 border-t border-slate-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="max-w-3xl">
-          <div className="text-xs font-bold text-emerald-800 tracking-wider uppercase">
-            07. Tim Pengembang Karya
-          </div>
-          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-slate-900 mt-2 tracking-tight">
+          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-slate-900 tracking-tight">
             Kolaborasi Interdisipliner Teknik Komputer & Teknik Sipil
           </h2>
           <p className="mt-4 text-base text-slate-600 leading-relaxed">
-            Karya essay inovasi ini disusun untuk ajang <strong className="text-slate-900 font-semibold">GEMASTE National Essay Competition 2026</strong> bidang Lingkungan oleh tim mahasiswa dan dosen pembimbing Fakultas Teknik Universitas Negeri Semarang (UNNES).
+            Tim peneliti mahasiswa dan dosen pembimbing Fakultas Teknik Universitas Negeri Semarang (UNNES).
           </p>
         </div>
 
@@ -149,23 +146,6 @@ export const TeamSection: React.FC = () => {
               )}
             </div>
           ))}
-        </div>
-
-        {/* Institution Badge Strip */}
-        <div className="mt-12 p-6 rounded-2xl bg-white border border-slate-200 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-600">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-amber-100 text-amber-800 flex items-center justify-center font-bold">
-              UNNES
-            </div>
-            <div>
-              <div className="font-bold text-slate-900 text-sm">Universitas Negeri Semarang</div>
-              <div>Kota Semarang, Jawa Tengah · Indonesia</div>
-            </div>
-          </div>
-          <div className="text-right sm:border-l sm:pl-6 border-slate-200">
-            <div className="font-semibold text-slate-800">GEMASTE National Essay Competition 2026</div>
-            <div className="text-slate-500">Subtema: Teknologi Ramah Lingkungan & Dekarbonisasi Konstruksi</div>
-          </div>
         </div>
       </div>
     </section>
