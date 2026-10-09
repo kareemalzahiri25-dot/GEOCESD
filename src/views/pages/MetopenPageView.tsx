@@ -26,8 +26,8 @@ export const MetopenPageView: React.FC<MetopenPageViewProps> = ({ onBackToHome }
         <div className="bg-white rounded-2xl border border-slate-200 p-6 md:p-8 shadow-xs">
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
             <div>
-              <div className="flex items-center gap-2 text-xs font-mono font-bold text-blue-800 uppercase tracking-wider">
-                <BookOpen className="w-4 h-4 text-blue-600" />
+              <div className="flex items-center gap-2 text-xs font-mono font-bold text-teal-800 uppercase tracking-wider">
+                <BookOpen className="w-4 h-4 text-teal-600" />
                 <span>Page Khusus: Metodologi Penelitian &amp; Validasi</span>
               </div>
               <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 mt-1 tracking-tight">

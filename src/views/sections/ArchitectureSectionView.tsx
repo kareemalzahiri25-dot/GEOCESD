@@ -42,10 +42,10 @@ export const ArchitectureSectionView: React.FC = () => {
         {/* Engine 2: Evidence Engine */}
         <div className="p-8 rounded-2xl bg-slate-50 border border-slate-200/80 flex flex-col justify-between hover:border-emerald-300 transition-colors">
           <div>
-            <div className="w-12 h-12 rounded-xl bg-blue-100 text-blue-800 flex items-center justify-center mb-6">
+            <div className="w-12 h-12 rounded-xl bg-teal-100 text-teal-800 flex items-center justify-center mb-6">
               <FileCheck className="w-6 h-6" />
             </div>
-            <div className="text-xs font-mono text-blue-700 font-semibold uppercase">Engine 02</div>
+            <div className="text-xs font-mono text-teal-700 font-semibold uppercase">Engine 02</div>
             <h3 className="text-xl font-bold text-slate-900 mt-1">Evidence Engine</h3>
             <p className="mt-3 text-xs sm:text-sm text-slate-600 leading-relaxed">
               Mengklasifikasikan bukti secara bertingkat dan mengawal jejak keabsahan data agar estimasi matematika tidak disalahartikan sebagai fakta hasil uji coba fisik.
@@ -57,7 +57,7 @@ export const ArchitectureSectionView: React.FC = () => {
                 <span className="text-slate-500">Hasil uji lab aktual</span>
               </div>
               <div className="flex items-center justify-between py-1 border-b border-slate-100">
-                <span className="font-semibold text-blue-800">2. Literature-Supported</span>
+                <span className="font-semibold text-teal-800">2. Literature-Supported</span>
                 <span className="text-slate-500">Studi terdahulu sepadan</span>
               </div>
               <div className="flex items-center justify-between py-1 border-b border-slate-100">
@@ -79,10 +79,10 @@ export const ArchitectureSectionView: React.FC = () => {
         {/* Engine 3: Decision Engine */}
         <div className="p-8 rounded-2xl bg-slate-50 border border-slate-200/80 flex flex-col justify-between hover:border-emerald-300 transition-colors">
           <div>
-            <div className="w-12 h-12 rounded-xl bg-purple-100 text-purple-800 flex items-center justify-center mb-6">
+            <div className="w-12 h-12 rounded-xl bg-emerald-100 text-emerald-900 flex items-center justify-center mb-6">
               <Scale className="w-6 h-6" />
             </div>
-            <div className="text-xs font-mono text-purple-700 font-semibold uppercase">Engine 03</div>
+            <div className="text-xs font-mono text-emerald-700 font-semibold uppercase">Engine 03</div>
             <h3 className="text-xl font-bold text-slate-900 mt-1">Decision Engine</h3>
             <p className="mt-3 text-xs sm:text-sm text-slate-600 leading-relaxed">
               Mengeksekusi logika keputusan <strong className="text-slate-900">Gate-First, Rank-Second</strong>. Menahan keputusan rekomendasi ketika data tidak cukup, bukan memaksakan jawaban semu.
@@ -90,15 +90,15 @@ export const ArchitectureSectionView: React.FC = () => {
 
             <div className="mt-6 pt-6 border-t border-slate-200 space-y-2 text-xs text-slate-600">
               <div className="flex items-center gap-2">
-                <span className="w-1.5 h-1.5 rounded-full bg-purple-500" />
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-600" />
                 <span>Technical Gate: Kuat tekan & absorpsi SNI</span>
               </div>
               <div className="flex items-center gap-2">
-                <span className="w-1.5 h-1.5 rounded-full bg-purple-500" />
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-600" />
                 <span>Economic Screening: CAPEX, OPEX & Payback</span>
               </div>
               <div className="flex items-center gap-2">
-                <span className="w-1.5 h-1.5 rounded-full bg-purple-500" />
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-600" />
                 <span>Environmental Screening: Neraca emisi CO₂e</span>
               </div>
             </div>
@@ -106,21 +106,6 @@ export const ArchitectureSectionView: React.FC = () => {
 
           <div className="mt-8 pt-4 border-t border-slate-200 text-xs font-medium text-slate-500">
             Peran: Menetapkan status kelayakan akhir kandidat material
-          </div>
-        </div>
-      </div>
-
-      {/* Philosophy Callout Quote from Essay */}
-      <div className="p-6 sm:p-8 bg-emerald-900 text-emerald-50 rounded-2xl relative overflow-hidden">
-        <div className="relative z-10 max-w-4xl">
-          <div className="text-xs uppercase font-mono tracking-widest text-emerald-300 mb-2">
-            Prinsip Fundamental GEOCEDS
-          </div>
-          <blockquote className="text-base sm:text-xl font-medium leading-relaxed italic text-white">
-            “GEOCEDS tidak mengubah limbah menjadi jawaban; sistem ini membangun dasar evidence untuk menentukan apakah limbah tersebut layak menjadi jawaban.”
-          </blockquote>
-          <div className="mt-3 text-xs text-emerald-300">
-            — Mahendra & Wardana (Universitas Negeri Semarang, 2026)
           </div>
         </div>
       </div>

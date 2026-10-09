@@ -96,7 +96,7 @@ const StepItemCard: React.FC<StepItemCardProps> = ({
       onMouseLeave={() => onHover(null)}
       onClick={() => onClick(step.id)}
       className={`group relative flex flex-col items-start cursor-pointer transition-all duration-200 hover:-translate-y-0.5 rounded-xl p-1.5 sm:p-2 ${
-        isSelected ? 'bg-sky-50/70 ring-1 ring-sky-300' : 'hover:bg-sky-50/40'
+        isSelected ? 'bg-emerald-50/90 ring-1 ring-emerald-400' : 'hover:bg-emerald-50/50'
       } ${!isLastInRow ? 'pr-1 sm:pr-2' : ''}`}
     >
       {/* Top Header: Badge nomor & Garis penghubung horizontal */}
@@ -104,8 +104,8 @@ const StepItemCard: React.FC<StepItemCardProps> = ({
         <div
           className={`w-9 h-9 rounded-full font-bold text-xs flex items-center justify-center transition-all ${
             isSelected
-              ? 'bg-sky-500 text-white shadow-md shadow-sky-500/30'
-              : 'bg-sky-100 text-sky-700 shadow-xs group-hover:bg-sky-400 group-hover:text-white'
+              ? 'bg-emerald-600 text-white shadow-md shadow-emerald-600/30'
+              : 'bg-emerald-100 text-emerald-800 shadow-xs group-hover:bg-emerald-500 group-hover:text-white'
           }`}
         >
           {step.stepNumber}
@@ -113,18 +113,18 @@ const StepItemCard: React.FC<StepItemCardProps> = ({
 
         {/* Panah konektor ke langkah berikutnya (khusus bukan elemen terakhir di baris) */}
         {!isLastInRow ? (
-          <div className="hidden md:flex flex-1 items-center px-2">
-            <div className="h-[1.5px] w-full bg-sky-200"></div>
-            <div className="w-0 h-0 border-y-[3.5px] border-y-transparent border-l-[6px] border-l-sky-300"></div>
+          <div className="flex flex-1 items-center px-1 sm:px-2">
+            <div className="h-[1.5px] w-full bg-emerald-200"></div>
+            <div className="w-0 h-0 border-y-[3.5px] border-y-transparent border-l-[6px] border-l-emerald-400"></div>
           </div>
         ) : (
-          <div className="hidden md:block flex-1"></div>
+          <div className="flex-1"></div>
         )}
       </div>
 
       {/* Body: Ikon dan teks deskripsi langkah */}
-      <div className="flex items-start gap-3 w-full">
-        <div className="w-7 h-7 shrink-0 text-sky-500 pt-0.5 group-hover:text-sky-600 transition-colors">
+      <div className="flex items-start gap-2.5 sm:gap-3 w-full">
+        <div className="w-6 h-6 sm:w-7 sm:h-7 shrink-0 text-emerald-600 pt-0.5 group-hover:text-emerald-700 transition-colors">
           <StepIcon type={step.iconType} />
         </div>
         <div className="space-y-1">
@@ -165,7 +165,7 @@ export const AlurEvaluasiSectionView: React.FC = () => {
   return (
     <section className="py-12 sm:py-16 px-3 sm:px-6 lg:px-8 flex justify-center bg-slate-50 border-t border-slate-200">
       {/* MAIN CONTAINER: SECTION ALUR EVALUASI */}
-      <div className="w-full max-w-[1240px] canvas-bg rounded-3xl sm:rounded-[2.5rem] border border-gray-200 shadow-[0_20px_50px_-15px_rgba(56,189,248,0.14)] p-6 sm:p-10 lg:p-14 relative overflow-hidden">
+      <div className="w-full max-w-[1240px] canvas-bg rounded-3xl sm:rounded-[2.5rem] border border-gray-200 shadow-[0_20px_50px_-15px_rgba(16,185,129,0.12)] p-4 sm:p-8 lg:p-12 relative overflow-hidden">
         
         {/* Latar Belakang Daun Botanik Transparan Organik */}
         <div className="absolute -top-10 -left-10 w-60 h-60 opacity-20 pointer-events-none -z-0">
@@ -182,15 +182,15 @@ export const AlurEvaluasiSectionView: React.FC = () => {
         </div>
 
         {/* SECTION HEADER: Hierarki Teks */}
-        <div id="alur-evaluasi" className="relative z-10 space-y-8 sm:space-y-10">
+        <div id="alur-evaluasi" className="relative z-10 space-y-6 sm:space-y-8">
           
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-5 border-b border-gray-200 pb-6">
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-gray-200 pb-5">
             {/* Sisi Kiri Header */}
-            <div className="space-y-2">
-              <span className="block text-[11px] sm:text-xs font-bold tracking-[0.22em] text-sky-600 uppercase">
+            <div className="space-y-1.5">
+              <span className="block text-[11px] sm:text-xs font-bold tracking-[0.22em] text-emerald-700 uppercase">
                 {header.tag}
               </span>
-              <h2 className="font-serif text-3xl sm:text-4xl lg:text-[42px] leading-tight text-gray-800 font-normal tracking-tight">
+              <h2 className="text-2xl sm:text-3xl lg:text-[40px] leading-tight text-gray-900 font-extrabold tracking-tight">
                 {header.title}
               </h2>
             </div>
@@ -201,63 +201,79 @@ export const AlurEvaluasiSectionView: React.FC = () => {
             </p>
           </div>
 
-          {/* WORKFLOW DIAGRAM: 10 LANGKAH DENGAN SKY BLUE THEME */}
-          <div className="relative py-2">
-
-            {/* ================= BARIS 1: LANGKAH 01 - 05 ================= */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-6 lg:gap-4 relative z-10">
-              {row1Steps.map((step, index) => (
-                <StepItemCard
-                  key={step.id}
-                  step={step}
-                  isLastInRow={index === row1Steps.length - 1}
-                  isSelected={selectedStepId === step.id}
-                  onHover={setHoveredStepId}
-                  onClick={handleCardClick}
-                />
-              ))}
+          {/* Mobile swipe hint banner (khusus mobile/tablet agar pengguna mengetahui alur lengkap dapat digeser) */}
+          <div className="flex lg:hidden items-center justify-between text-xs text-emerald-800 bg-emerald-50/90 border border-emerald-200 rounded-xl px-3.5 py-2">
+            <div className="flex items-center gap-2 font-medium">
+              <span className="flex h-2 w-2 relative">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+              </span>
+              <span>Alur Utuh 10 Langkah (Format Desktop)</span>
             </div>
+            <span className="text-[11px] text-emerald-700 font-semibold bg-white px-2.5 py-0.5 rounded-md border border-emerald-200 shadow-2xs">
+              Geser horizontal →
+            </span>
+          </div>
 
-            {/* ================= S-CURVE CONNECTOR (DARI STEP 05 KE STEP 06) ================= */}
-            <div className="hidden md:block w-full my-4 relative h-10 pointer-events-none">
-              <svg className="w-full h-full" viewBox="0 0 1000 40" preserveAspectRatio="none" fill="none">
-                <path 
-                  d="M 900 -15 H 960 C 975 -15, 985 -5, 985 10 C 985 22, 975 24, 960 24 H 40 C 25 24, 15 28, 15 38 V 45" 
-                  stroke="#38BDF8" 
-                  strokeWidth="1.8" 
-                  strokeLinecap="round"
-                />
-                <polygon points="11,43 19,43 15,50" fill="#38BDF8" />
-              </svg>
+          {/* WORKFLOW DIAGRAM: 10 LANGKAH DENGAN PALET EMERALD GREEN */}
+          <div className="relative py-2 overflow-x-auto pb-4 pt-1 touch-pan-x custom-scrollbar">
+            <div className="min-w-[920px] lg:min-w-0">
+
+              {/* ================= BARIS 1: LANGKAH 01 - 05 ================= */}
+              <div className="grid grid-cols-5 gap-3 lg:gap-4 relative z-10">
+                {row1Steps.map((step, index) => (
+                  <StepItemCard
+                    key={step.id}
+                    step={step}
+                    isLastInRow={index === row1Steps.length - 1}
+                    isSelected={selectedStepId === step.id}
+                    onHover={setHoveredStepId}
+                    onClick={handleCardClick}
+                  />
+                ))}
+              </div>
+
+              {/* ================= S-CURVE CONNECTOR (DARI STEP 05 KE STEP 06) ================= */}
+              <div className="block w-full my-3 sm:my-4 relative h-8 sm:h-10 pointer-events-none">
+                <svg className="w-full h-full" viewBox="0 0 1000 40" preserveAspectRatio="none" fill="none">
+                  <path 
+                    d="M 900 -15 H 960 C 975 -15, 985 -5, 985 10 C 985 22, 975 24, 960 24 H 40 C 25 24, 15 28, 15 38 V 45" 
+                    stroke="#10B981" 
+                    strokeWidth="1.8" 
+                    strokeLinecap="round"
+                  />
+                  <polygon points="11,43 19,43 15,50" fill="#10B981" />
+                </svg>
+              </div>
+
+              {/* ================= BARIS 2: LANGKAH 06 - 10 ================= */}
+              <div className="grid grid-cols-5 gap-3 lg:gap-4 relative z-10 pt-1 sm:pt-0">
+                {row2Steps.map((step, index) => (
+                  <StepItemCard
+                    key={step.id}
+                    step={step}
+                    isLastInRow={index === row2Steps.length - 1}
+                    isSelected={selectedStepId === step.id}
+                    onHover={setHoveredStepId}
+                    onClick={handleCardClick}
+                  />
+                ))}
+              </div>
+
             </div>
-
-            {/* ================= BARIS 2: LANGKAH 06 - 10 ================= */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-6 lg:gap-4 relative z-10 pt-2 sm:pt-0">
-              {row2Steps.map((step, index) => (
-                <StepItemCard
-                  key={step.id}
-                  step={step}
-                  isLastInRow={index === row2Steps.length - 1}
-                  isSelected={selectedStepId === step.id}
-                  onHover={setHoveredStepId}
-                  onClick={handleCardClick}
-                />
-              ))}
-            </div>
-
           </div>
 
           {/* Info pill saat langkah diklik / aktif */}
           {selectedStep && (
-            <div className="mt-4 p-3.5 bg-sky-50/90 border border-sky-200 rounded-xl flex items-center justify-between text-xs text-slate-700 animate-fadeIn">
+            <div className="mt-4 p-3.5 bg-emerald-50/90 border border-emerald-200 rounded-xl flex items-center justify-between text-xs text-slate-700 animate-fadeIn">
               <div className="flex items-center gap-2">
-                <span className="w-6 h-6 rounded-full bg-sky-600 text-white font-bold flex items-center justify-center text-[10px]">
+                <span className="w-6 h-6 rounded-full bg-emerald-600 text-white font-bold flex items-center justify-center text-[10px]">
                   {selectedStep.stepNumber}
                 </span>
-                <span className="font-semibold text-sky-950">{selectedStep.title}</span>
-                <span className="text-sky-700 hidden sm:inline">— {selectedStep.category}</span>
+                <span className="font-semibold text-emerald-950">{selectedStep.title}</span>
+                <span className="text-emerald-700 hidden sm:inline">— {selectedStep.category}</span>
                 {selectedStep.detailBadge && (
-                  <span className="px-2 py-0.5 rounded-md bg-white border border-sky-300 text-sky-800 font-medium text-[11px]">
+                  <span className="px-2 py-0.5 rounded-md bg-white border border-emerald-300 text-emerald-800 font-medium text-[11px]">
                     {selectedStep.detailBadge}
                   </span>
                 )}

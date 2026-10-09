@@ -125,7 +125,7 @@ export const MetopenSectionView: React.FC = () => {
           </div>
 
           <div className="bg-slate-50 p-6 rounded-2xl border border-slate-200">
-            <div className="text-xs font-mono font-bold text-blue-700 uppercase">Status 2</div>
+            <div className="text-xs font-mono font-bold text-teal-700 uppercase">Status 2</div>
             <h4 className="text-base font-bold text-slate-900 mt-1">Diturunkan (Derived)</h4>
             <p className="text-xs text-slate-600 mt-2 leading-relaxed">
               Nilai yang dihasilkan dari persamaan neraca massa, geometri produk, atau konversi stoikiometri terstandar.

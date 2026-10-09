@@ -1,5 +1,5 @@
 import React from 'react';
-import { Cpu, Menu, X, ArrowUpRight } from 'lucide-react';
+import { Menu, X, ArrowUpRight } from 'lucide-react';
 import { PageId } from '../../models/silica.model';
 
 interface NavbarViewProps {
@@ -40,17 +40,16 @@ export const NavbarView: React.FC<NavbarViewProps> = ({
             className="flex items-center gap-3 text-slate-900 group whitespace-nowrap shrink-0 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 rounded-md cursor-pointer"
             aria-label="GEOCEDS Beranda"
           >
-            <div className="w-9 h-9 rounded-lg bg-emerald-600 text-white flex items-center justify-center shadow-xs group-hover:bg-emerald-700 transition-colors">
-              <Cpu className="w-5 h-5" />
+            <div className="w-10 h-10 rounded-lg overflow-hidden flex items-center justify-center shadow-xs bg-slate-100 group-hover:ring-2 group-hover:ring-emerald-500/30 transition-all">
+              <img
+                src="/images/logo_project.png"
+                alt="Logo GEOCEDS"
+                className="w-full h-full object-contain"
+              />
             </div>
-            <div className="flex flex-col">
-              <span className="text-lg font-extrabold tracking-tight text-slate-900">
-                GEO<span className="text-emerald-600">CEDS</span>
-              </span>
-              <span className="text-[10px] tracking-wider text-slate-500 font-medium -mt-1 hidden sm:block">
-                EVIDENCE-BASED DSS
-              </span>
-            </div>
+            <span className="text-xl sm:text-2xl font-extrabold tracking-tight text-slate-900">
+              GEO<span className="text-emerald-600">CEDS</span>
+            </span>
           </button>
 
           {/* Zone 2: Navbar di header (beranda | simulasi | metopen | tim kami) */}

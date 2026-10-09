@@ -22,17 +22,14 @@ export const TeamPageView: React.FC<TeamPageViewProps> = ({ onBackToHome }) => {
         </div>
 
         {/* Page Header */}
-        <div className="bg-white rounded-2xl border border-slate-200 p-6 md:p-8 shadow-xs">
-          <div className="flex items-center gap-2 text-xs font-mono font-bold text-purple-800 uppercase tracking-wider">
-            <Users className="w-4 h-4 text-purple-600" />
+        <div className="bg-white rounded-xl border border-slate-200/90 py-4 px-6 shadow-xs max-w-2xl mx-auto text-center flex flex-col items-center">
+          <div className="inline-flex items-center justify-center gap-2 text-xs font-mono font-bold text-emerald-700 uppercase tracking-wider bg-emerald-50/90 border border-emerald-200/80 px-3 py-1 rounded-full">
+            <Users className="w-3.5 h-3.5 text-emerald-600" />
             <span>Page Khusus: Identitas Tim Pengembang</span>
           </div>
-          <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 mt-1 tracking-tight">
+          <h1 className="text-xl sm:text-2xl font-extrabold text-slate-900 mt-2 tracking-tight">
             Tim Peneliti GEOCEDS Universitas Negeri Semarang
           </h1>
-          <p className="mt-2 text-xs sm:text-sm text-slate-600">
-            Kolaborasi peneliti mahasiswa dan dosen pembimbing Fakultas Teknik Universitas Negeri Semarang (UNNES).
-          </p>
         </div>
 
         {/* Modular Team View */}

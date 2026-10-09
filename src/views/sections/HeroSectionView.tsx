@@ -23,112 +23,112 @@ export const HeroSectionView: React.FC<HeroSectionViewProps> = ({ onNavigate }) 
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-stretch">
-          {/* Left Headline */}
-          <div className="lg:col-span-7 flex flex-col justify-center">
-            <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-slate-900 tracking-tight leading-[1.15] text-balance">
-              Transformasi Residu Geothermal Menjadi Material Konstruksi Berkelanjutan
-            </h1>
+        {/* Main Headline & Intro (Not constrained side-by-side on desktop) */}
+        <div className="max-w-4xl">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-5xl font-extrabold text-slate-900 tracking-tight leading-[1.18] text-balance">
+            Transformasi Residu Geothermal Menjadi Material Konstruksi Berkelanjutan
+          </h1>
 
-            <p className="mt-5 text-base sm:text-lg text-slate-600 leading-relaxed max-w-2xl">
-              GEOCEDS adalah gagasan <strong className="text-slate-900 font-semibold">Evidence-Based Decision Support System (DSS)</strong> untuk mengevaluasi kelayakan residu silika PLTP Dieng menjadi produk paving block mutu tinggi berstandar SNI melalui prinsip evaluasi berjenjang <span className="text-emerald-700 font-semibold underline decoration-emerald-300 underline-offset-4">Gate-First, Rank-Second</span>.
-            </p>
+          <p className="mt-5 text-base sm:text-lg text-slate-600 leading-relaxed max-w-3xl">
+            GEOCEDS adalah gagasan <strong className="text-slate-900 font-semibold">Evidence-Based Decision Support System (DSS)</strong> untuk mengevaluasi kelayakan residu silika PLTP Dieng menjadi produk paving block mutu tinggi berstandar SNI melalui prinsip evaluasi berjenjang <span className="text-emerald-700 font-semibold underline decoration-emerald-300 underline-offset-4">Gate-First, Rank-Second</span>.
+          </p>
 
-            {/* Action Buttons */}
-            <div className="mt-8 flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4">
-              <button
-                onClick={() => onNavigate('simulasi')}
-                className="inline-flex items-center justify-center gap-2 px-6 py-3.5 text-sm font-semibold text-white bg-emerald-700 hover:bg-emerald-800 rounded-lg shadow-xs transition-all cursor-pointer active:scale-[0.98]"
-              >
-                <span>Buka Halaman Simulasi</span>
-                <ArrowRight className="w-4 h-4" />
-              </button>
+          {/* Action Buttons */}
+          <div className="mt-8 flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4">
+            <button
+              onClick={() => onNavigate('simulasi')}
+              className="inline-flex items-center justify-center gap-2 px-6 py-3.5 text-sm font-semibold text-white bg-emerald-700 hover:bg-emerald-800 rounded-lg shadow-xs transition-all cursor-pointer active:scale-[0.98]"
+            >
+              <span>Buka Halaman Simulasi</span>
+              <ArrowRight className="w-4 h-4" />
+            </button>
 
-              <a
-                href="#ringkasan-essay"
-                className="inline-flex items-center justify-center gap-2 px-6 py-3.5 text-sm font-semibold text-slate-700 bg-slate-100 hover:bg-slate-200 border border-slate-200 rounded-lg transition-all active:scale-[0.98]"
-              >
-                <span>Baca Rangkuman Essay</span>
-              </a>
-            </div>
-
-            {/* Trust Indicators */}
-            <div className="mt-8 pt-6 border-t border-slate-200 grid grid-cols-2 sm:grid-cols-3 gap-4 text-xs text-slate-600">
-              <div className="flex items-center gap-2">
-                <ShieldCheck className="w-4 h-4 text-emerald-600 shrink-0" />
-                <span>SNI 03-0691-1996 Verified</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <Database className="w-4 h-4 text-emerald-600 shrink-0" />
-                <span>Data Provenance Tracking</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <Layers className="w-4 h-4 text-emerald-600 shrink-0" />
-                <span>Closed-Loop Development</span>
-              </div>
-            </div>
+            <a
+              href="#ringkasan-essay"
+              className="inline-flex items-center justify-center gap-2 px-6 py-3.5 text-sm font-semibold text-slate-700 bg-slate-100 hover:bg-slate-200 border border-slate-200 rounded-lg transition-all active:scale-[0.98]"
+            >
+              <span>Baca Rangkuman Essay</span>
+            </a>
           </div>
 
-          {/* Right Card: Executive Abstract Snapshot */}
-          <div className="lg:col-span-5 flex flex-col">
-            <div className="bg-slate-900 text-white rounded-2xl p-6 sm:p-7 shadow-xl border border-slate-800 flex flex-col justify-between h-full relative overflow-hidden">
-              <div className="absolute top-0 right-0 w-48 h-48 bg-emerald-500/10 rounded-full blur-2xl pointer-events-none" />
+          {/* Trust Indicators */}
+          <div className="mt-8 pt-6 border-t border-slate-200 grid grid-cols-2 sm:grid-cols-3 gap-4 text-xs text-slate-600 max-w-2xl">
+            <div className="flex items-center gap-2">
+              <ShieldCheck className="w-4 h-4 text-emerald-600 shrink-0" />
+              <span>SNI 03-0691-1996 Verified</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <Database className="w-4 h-4 text-emerald-600 shrink-0" />
+              <span>Data Provenance Tracking</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <Layers className="w-4 h-4 text-emerald-600 shrink-0" />
+              <span>Closed-Loop Development</span>
+            </div>
+          </div>
+        </div>
 
-              <div>
-                <div className="flex items-center justify-between pb-4 border-b border-slate-800">
-                  <span className="text-xs font-mono text-emerald-400 font-semibold tracking-wider">
-                    RINGKASAN EKSEKUTIF KARYA
-                  </span>
-                  <span className="text-xs text-slate-400">PLTP Dieng Jawa Tengah</span>
-                </div>
+        {/* Executive Abstract Snapshot Card (Positioned below h1 & intro, not beside) */}
+        <div className="mt-12">
+          <div className="bg-slate-900 text-white rounded-2xl p-6 sm:p-8 shadow-xl border border-slate-800 relative overflow-hidden">
+            <div className="absolute top-0 right-0 w-64 h-64 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none" />
 
-                <div className="mt-4">
-                  <h2 className="text-base font-bold text-white leading-snug">
+            <div>
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-4 border-b border-slate-800 gap-2">
+                <span className="text-xs font-mono text-emerald-400 font-semibold tracking-wider">
+                  RINGKASAN EKSEKUTIF KARYA
+                </span>
+                <span className="text-xs text-slate-400">PLTP Dieng Jawa Tengah</span>
+              </div>
+
+              <div className="mt-5 grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-start">
+                <div className="lg:col-span-5">
+                  <h2 className="text-lg sm:text-xl font-bold text-white leading-snug">
                     GEOCEDS Decision Architecture
                   </h2>
-                  <p className="mt-2 text-xs text-slate-300 leading-relaxed">
+                  <p className="mt-2 text-xs sm:text-sm text-slate-300 leading-relaxed">
                     Sistem mengintegrasikan identitas material, basis formulasi normal, neraca massa, persyaratan teknis SNI, serta skrining ekonomi & lingkungan dalam satu alur keputusan yang dapat ditelusuri.
                   </p>
                 </div>
 
                 {/* 3 Core Principles */}
-                <div className="mt-5 space-y-2.5 text-xs">
-                  <div className="p-3 rounded-lg bg-slate-800/80 border border-slate-700/60 flex items-start gap-2.5">
-                    <span className="font-mono text-emerald-400 font-bold mt-0.5">01</span>
-                    <div>
+                <div className="lg:col-span-7 grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
+                  <div className="p-3.5 rounded-lg bg-slate-800/80 border border-slate-700/60 flex flex-col justify-between">
+                    <span className="font-mono text-emerald-400 font-bold">01</span>
+                    <div className="mt-2">
                       <div className="font-semibold text-slate-200">Bukan Sekadar Mix Calculator</div>
-                      <div className="text-[11px] text-slate-400">Menjawab keputusan apa yang dapat dipertanggungjawabkan, bukan cuma menimbang komposisi.</div>
+                      <div className="text-[11px] text-slate-400 mt-1 leading-normal">Menjawab keputusan apa yang dapat dipertanggungjawabkan, bukan cuma menimbang komposisi.</div>
                     </div>
                   </div>
 
-                  <div className="p-3 rounded-lg bg-slate-800/80 border border-slate-700/60 flex items-start gap-2.5">
-                    <span className="font-mono text-emerald-400 font-bold mt-0.5">02</span>
-                    <div>
+                  <div className="p-3.5 rounded-lg bg-slate-800/80 border border-slate-700/60 flex flex-col justify-between">
+                    <span className="font-mono text-emerald-400 font-bold">02</span>
+                    <div className="mt-2">
                       <div className="font-semibold text-slate-200">Prinsip Gate-First, Rank-Second</div>
-                      <div className="text-[11px] text-slate-400">Wajib lolos persyaratan teknis SNI terlebih dahulu sebelum dinilai aspek ekonomi atau lingkungannya.</div>
+                      <div className="text-[11px] text-slate-400 mt-1 leading-normal">Wajib lolos persyaratan teknis SNI terlebih dahulu sebelum dinilai aspek ekonomi atau lingkungannya.</div>
                     </div>
                   </div>
 
-                  <div className="p-3 rounded-lg bg-slate-800/80 border border-slate-700/60 flex items-start gap-2.5">
-                    <span className="font-mono text-emerald-400 font-bold mt-0.5">03</span>
-                    <div>
+                  <div className="p-3.5 rounded-lg bg-slate-800/80 border border-slate-700/60 flex flex-col justify-between">
+                    <span className="font-mono text-emerald-400 font-bold">03</span>
+                    <div className="mt-2">
                       <div className="font-semibold text-slate-200">Transparansi Data Gap</div>
-                      <div className="text-[11px] text-slate-400">Sistem berani menahan status rekomendasi jika data empiris belum memadai, mencegah klaim semu.</div>
+                      <div className="text-[11px] text-slate-400 mt-1 leading-normal">Sistem berani menahan status rekomendasi jika data empiris belum memadai, mencegah klaim semu.</div>
                     </div>
                   </div>
                 </div>
               </div>
+            </div>
 
-              <div className="mt-6 pt-4 border-t border-slate-800 flex items-center justify-between text-xs">
-                <span className="text-slate-400">Platform Awal: Paving Block Beton</span>
-                <button
-                  onClick={() => onNavigate('simulasi')}
-                  className="text-emerald-400 hover:text-emerald-300 font-semibold flex items-center gap-1 group cursor-pointer"
-                >
-                  <span>Uji Kasus DEMO-Q-001</span>
-                  <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-0.5" />
-                </button>
-              </div>
+            <div className="mt-6 pt-4 border-t border-slate-800 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs">
+              <span className="text-slate-400">Platform Awal: Paving Block Beton Ramah Lingkungan</span>
+              <button
+                onClick={() => onNavigate('simulasi')}
+                className="text-emerald-400 hover:text-emerald-300 font-semibold flex items-center gap-1.5 group cursor-pointer"
+              >
+                <span>Uji Kasus DEMO-Q-001</span>
+                <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-0.5" />
+              </button>
             </div>
           </div>
         </div>

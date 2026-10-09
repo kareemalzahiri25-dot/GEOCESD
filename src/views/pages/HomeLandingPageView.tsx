@@ -4,7 +4,7 @@ import { HeroSectionView } from '../sections/HeroSectionView';
 import { AlurEvaluasiSectionView } from '../sections/AlurEvaluasiSectionView';
 import { ProblemSectionView } from '../sections/ProblemSectionView';
 import { ArchitectureSectionView } from '../sections/ArchitectureSectionView';
-import { Sparkles, BookOpen, Users, ChevronRight, TrendingUp } from 'lucide-react';
+import { Sparkles, BookOpen, Users, ChevronRight, TrendingUp, Quote } from 'lucide-react';
 
 interface HomeLandingPageViewProps {
   onNavigate: (page: PageId) => void;
@@ -45,7 +45,7 @@ export const HomeLandingPageView: React.FC<HomeLandingPageViewProps> = ({ onNavi
 
           {/* Bagian 03: Architecture Section View */}
           <div className="pt-6 border-t border-slate-200">
-            <div className="flex items-center gap-2 text-xs font-mono font-bold text-blue-800 uppercase tracking-wider mb-4">
+            <div className="flex items-center gap-2 text-xs font-mono font-bold text-emerald-800 uppercase tracking-wider mb-4">
               <span>Bagian 03 · Arsitektur Tiga Engine GEOCEDS</span>
             </div>
             <ArchitectureSectionView />
@@ -87,7 +87,7 @@ export const HomeLandingPageView: React.FC<HomeLandingPageViewProps> = ({ onNavi
             </div>
           </div>
 
-          {/* Bagian 05: Metodologi Closed Loop & Filosofi Penutup */}
+          {/* Bagian 05: Metodologi Closed Loop */}
           <div className="bg-emerald-900 text-white rounded-2xl p-6 md:p-10 shadow-lg relative overflow-hidden">
             <div className="relative z-10 max-w-4xl space-y-4">
               <div className="text-xs font-mono uppercase tracking-widest text-emerald-300">
@@ -99,14 +99,6 @@ export const HomeLandingPageView: React.FC<HomeLandingPageViewProps> = ({ onNavi
               <p className="text-xs sm:text-sm text-emerald-100 leading-relaxed">
                 GEOCEDS tidak berhenti sebagai keluaran sekali jalan. Hasil pengujian laboratorium dimasukkan kembali ke basis data untuk mengoreksi asumsi model matematika dan mempersempit <em className="italic">data gap</em>. Dengan mekanisme ini, keputusan engineering pada setiap iterasi menjadi semakin kokoh dan akurat.
               </p>
-              <div className="pt-4 border-t border-emerald-800">
-                <blockquote className="text-base sm:text-lg font-medium italic text-emerald-200">
-                  “GEOCEDS tidak mengubah limbah menjadi jawaban; sistem ini membangun dasar evidence untuk menentukan apakah limbah tersebut layak menjadi jawaban.”
-                </blockquote>
-                <div className="text-xs text-emerald-400 mt-2">
-                  — Dhamar Firdaus Esa Mahendra &amp; Aditya Kusuma Wardana (Universitas Negeri Semarang, 2026)
-                </div>
-              </div>
             </div>
           </div>
         </div>
@@ -153,10 +145,10 @@ export const HomeLandingPageView: React.FC<HomeLandingPageViewProps> = ({ onNavi
             {/* Gateway 2: Metopen */}
             <div className="bg-slate-50 rounded-2xl border border-slate-200 p-6 flex flex-col justify-between hover:border-emerald-400 transition-colors">
               <div>
-                <div className="w-12 h-12 rounded-xl bg-blue-100 text-blue-800 flex items-center justify-center mb-4">
+                <div className="w-12 h-12 rounded-xl bg-teal-100 text-teal-800 flex items-center justify-center mb-4">
                   <BookOpen className="w-6 h-6" />
                 </div>
-                <div className="text-xs font-mono font-bold text-blue-700 uppercase">Halaman Khusus</div>
+                <div className="text-xs font-mono font-bold text-teal-700 uppercase">Halaman Khusus</div>
                 <h3 className="text-lg font-bold text-slate-900 mt-1">Metodologi Penelitian (Metopen)</h3>
                 <p className="mt-2 text-xs text-slate-600 leading-relaxed">
                   Pelajari alur Closed-Loop Development, kerangka DOE &amp; Response Surface Methodology (RSM), serta klasifikasi 4 status keabsahan data provenance.
@@ -165,7 +157,7 @@ export const HomeLandingPageView: React.FC<HomeLandingPageViewProps> = ({ onNavi
 
               <button
                 onClick={() => onNavigate('metopen')}
-                className="mt-6 inline-flex items-center justify-between w-full px-4 py-2.5 text-xs font-semibold text-blue-800 bg-blue-100/70 hover:bg-blue-200/70 rounded-lg transition-colors cursor-pointer"
+                className="mt-6 inline-flex items-center justify-between w-full px-4 py-2.5 text-xs font-semibold text-teal-800 bg-teal-100/70 hover:bg-teal-200/70 rounded-lg transition-colors cursor-pointer"
               >
                 <span>Buka Page Metopen</span>
                 <ChevronRight className="w-4 h-4" />
@@ -175,10 +167,10 @@ export const HomeLandingPageView: React.FC<HomeLandingPageViewProps> = ({ onNavi
             {/* Gateway 3: Tim Kami */}
             <div className="bg-slate-50 rounded-2xl border border-slate-200 p-6 flex flex-col justify-between hover:border-emerald-400 transition-colors">
               <div>
-                <div className="w-12 h-12 rounded-xl bg-purple-100 text-purple-800 flex items-center justify-center mb-4">
+                <div className="w-12 h-12 rounded-xl bg-emerald-100 text-emerald-800 flex items-center justify-center mb-4">
                   <Users className="w-6 h-6" />
                 </div>
-                <div className="text-xs font-mono font-bold text-purple-700 uppercase">Halaman Khusus</div>
+                <div className="text-xs font-mono font-bold text-emerald-700 uppercase">Halaman Khusus</div>
                 <h3 className="text-lg font-bold text-slate-900 mt-1">Tim Pengembang Karya</h3>
                 <p className="mt-2 text-xs text-slate-600 leading-relaxed">
                   Profil tim peneliti mahasiswa dan dosen pembimbing Fakultas Teknik Universitas Negeri Semarang (UNNES).
@@ -187,12 +179,41 @@ export const HomeLandingPageView: React.FC<HomeLandingPageViewProps> = ({ onNavi
 
               <button
                 onClick={() => onNavigate('tim-kami')}
-                className="mt-6 inline-flex items-center justify-between w-full px-4 py-2.5 text-xs font-semibold text-purple-800 bg-purple-100/70 hover:bg-purple-200/70 rounded-lg transition-colors cursor-pointer"
+                className="mt-6 inline-flex items-center justify-between w-full px-4 py-2.5 text-xs font-semibold text-emerald-800 bg-emerald-100/70 hover:bg-emerald-200/70 rounded-lg transition-colors cursor-pointer"
               >
                 <span>Buka Page Tim Kami</span>
                 <ChevronRight className="w-4 h-4" />
               </button>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 4. PESAN DARI TIM PENGEMBANG UNTUK PEMBACA (SEBELUM FOOTER) */}
+      <section className="py-20 bg-linear-to-b from-slate-900 via-slate-900 to-slate-950 text-white border-t border-slate-800 relative overflow-hidden">
+        {/* Dekorasi Cahaya Halus */}
+        <div className="absolute top-0 right-1/4 w-96 h-96 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute bottom-0 left-1/4 w-96 h-96 bg-teal-500/10 rounded-full blur-3xl pointer-events-none" />
+
+        <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="bg-slate-800/80 backdrop-blur-xs rounded-3xl border border-slate-700/80 p-8 sm:p-12 shadow-2xl">
+            {/* Header Lencana */}
+            <div className="flex items-center gap-2.5 text-xs font-mono font-semibold uppercase tracking-widest text-emerald-400 mb-6">
+              <div className="w-8 h-8 rounded-xl bg-emerald-500/20 border border-emerald-500/30 flex items-center justify-center text-emerald-300">
+                <Quote className="w-4 h-4" />
+              </div>
+              <span>Kata dari Tim Pengembang untuk Pembaca</span>
+            </div>
+
+            {/* Kutipan Inti Filosofi */}
+            <blockquote className="text-xl sm:text-2xl lg:text-3xl font-bold tracking-tight text-white leading-snug">
+              “GEOCEDS tidak mengubah limbah menjadi jawaban; sistem ini membangun dasar <span className="text-emerald-400">evidence</span> untuk menentukan apakah limbah tersebut layak menjadi jawaban.”
+            </blockquote>
+
+            {/* Narasi Catatan untuk Pembaca */}
+            <p className="mt-6 text-sm sm:text-base text-slate-300 leading-relaxed max-w-3xl">
+              Kami merancang sistem ini dengan kesadaran penuh bahwa inovasi material hijau dan pemanfaatan residu panas bumi tidak boleh sekadar berhenti pada klaim ramah lingkungan di atas kertas. Melalui GEOCEDS, setiap keputusan rekayasa divalidasi secara transparan — membedakan estimasi matematika dari kenyataan laboratorium, menahan keputusan saat data belum memadai, dan memastikan setiap langkah konversi membawa dampak nyata yang aman, terukur, dan berkelanjutan.
+            </p>
           </div>
         </div>
       </section>
