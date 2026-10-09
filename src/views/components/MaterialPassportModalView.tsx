@@ -1,12 +1,15 @@
 import React from 'react';
-import { X, ShieldCheck, CheckCircle2, AlertTriangle, FileSpreadsheet, Download, Printer } from 'lucide-react';
+import { X, Printer } from 'lucide-react';
 
-interface MaterialPassportModalProps {
+interface MaterialPassportModalViewProps {
   isOpen: boolean;
   onClose: () => void;
 }
 
-export const MaterialPassportModal: React.FC<MaterialPassportModalProps> = ({ isOpen, onClose }) => {
+export const MaterialPassportModalView: React.FC<MaterialPassportModalViewProps> = ({
+  isOpen,
+  onClose,
+}) => {
   if (!isOpen) return null;
 
   return (
@@ -31,7 +34,7 @@ export const MaterialPassportModal: React.FC<MaterialPassportModalProps> = ({ is
 
           <button
             onClick={onClose}
-            className="p-2 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition-colors"
+            className="p-2 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition-colors cursor-pointer"
             aria-label="Tutup passport"
           >
             <X className="w-5 h-5" />
@@ -138,19 +141,19 @@ export const MaterialPassportModal: React.FC<MaterialPassportModalProps> = ({ is
         {/* Modal Footer */}
         <div className="p-4 bg-slate-50 border-t border-slate-200 flex items-center justify-between">
           <div className="text-xs text-slate-500">
-            Terdaftar di basis data SILICA2CON DSS · UNNES 2026
+            Terdaftar di basis data GEOCEDS DSS · UNNES 2026
           </div>
           <div className="flex items-center gap-2">
             <button
               onClick={() => window.print()}
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-slate-700 bg-white border border-slate-200 rounded-lg hover:bg-slate-50"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-slate-700 bg-white border border-slate-200 rounded-lg hover:bg-slate-50 cursor-pointer"
             >
               <Printer className="w-3.5 h-3.5" />
               <span>Cetak Passport</span>
             </button>
             <button
               onClick={onClose}
-              className="px-4 py-1.5 text-xs font-semibold text-white bg-slate-900 rounded-lg hover:bg-slate-800"
+              className="px-4 py-1.5 text-xs font-semibold text-white bg-slate-900 rounded-lg hover:bg-slate-800 cursor-pointer"
             >
               Tutup
             </button>

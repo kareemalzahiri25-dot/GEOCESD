@@ -1,48 +1,60 @@
-import React, { useState } from 'react';
-import { Navbar, PageId } from './components/Navbar';
-import { HomeLandingPage } from './components/HomeLandingPage';
-import { SimulasiPage } from './components/Pages/SimulasiPage';
-import { MetopenPage } from './components/Pages/MetopenPage';
-import { TeamPage } from './components/Pages/TeamPage';
-import { Footer } from './components/Footer';
+import React from 'react';
+import { useNavigationController } from './controllers/useNavigationController';
+import { NavbarView } from './views/components/NavbarView';
+import { FooterView } from './views/components/FooterView';
+import { HomeLandingPageView } from './views/pages/HomeLandingPageView';
+import { SimulasiPageView } from './views/pages/SimulasiPageView';
+import { MetopenPageView } from './views/pages/MetopenPageView';
+import { TeamPageView } from './views/pages/TeamPageView';
 
+/**
+ * App Root Component (MVC Architecture Coordinator)
+ * - Model: Domain entities, state types & calculations in src/models/
+ * - View: Presentation layer & layouts in src/views/
+ * - Controller: Business logic hooks & navigation management in src/controllers/
+ */
 export default function App() {
-  const [currentPage, setCurrentPage] = useState<PageId>('beranda');
-
-  const handleNavigate = (page: PageId) => {
-    setCurrentPage(page);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
+  const {
+    currentPage,
+    mobileMenuOpen,
+    isScrolled,
+    navigateTo,
+    toggleMobileMenu,
+    scrollToTop,
+  } = useNavigationController('beranda');
 
   return (
     <div className="min-h-screen bg-slate-50 text-slate-900 flex flex-col font-sans selection:bg-emerald-600 selection:text-white">
-      {/* Top Navbar Header with strict 3-zone contract */}
-      <Navbar
+      {/* View: Top Navigation Bar */}
+      <NavbarView
         activePage={currentPage}
-        onNavigate={handleNavigate}
+        isScrolled={isScrolled}
+        mobileMenuOpen={mobileMenuOpen}
+        onNavigate={navigateTo}
+        onToggleMobileMenu={toggleMobileMenu}
       />
 
-      {/* Main Dynamic View Area */}
+      {/* View: Active Page Routing */}
       <main className="flex-1 w-full">
         {currentPage === 'beranda' && (
-          <HomeLandingPage onNavigate={handleNavigate} />
+          <HomeLandingPageView onNavigate={navigateTo} />
         )}
 
         {currentPage === 'simulasi' && (
-          <SimulasiPage onBackToHome={() => handleNavigate('beranda')} />
+          <SimulasiPageView onBackToHome={() => navigateTo('beranda')} />
         )}
 
         {currentPage === 'metopen' && (
-          <MetopenPage onBackToHome={() => handleNavigate('beranda')} />
+          <MetopenPageView onBackToHome={() => navigateTo('beranda')} />
         )}
 
         {currentPage === 'tim-kami' && (
-          <TeamPage onBackToHome={() => handleNavigate('beranda')} />
+          <TeamPageView onBackToHome={() => navigateTo('beranda')} />
         )}
       </main>
 
-      {/* Modern Footer */}
-      <Footer onNavigate={handleNavigate} />
+      {/* View: Footer */}
+      <FooterView onNavigate={navigateTo} onScrollToTop={scrollToTop} />
     </div>
   );
 }

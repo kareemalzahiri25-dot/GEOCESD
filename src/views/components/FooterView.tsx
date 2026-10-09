@@ -1,23 +1,13 @@
 import React from 'react';
 import { Cpu, ArrowUp } from 'lucide-react';
-import { PageId } from './Navbar';
+import { PageId } from '../../models/silica.model';
 
-interface FooterProps {
-  onNavigate?: (page: PageId) => void;
+interface FooterViewProps {
+  onNavigate: (page: PageId) => void;
+  onScrollToTop: () => void;
 }
 
-export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
-  const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
-
-  const handleNav = (page: PageId) => {
-    if (onNavigate) {
-      onNavigate(page);
-    }
-    scrollToTop();
-  };
-
+export const FooterView: React.FC<FooterViewProps> = ({ onNavigate, onScrollToTop }) => {
   return (
     <footer className="bg-slate-900 text-slate-400 py-14 border-t border-slate-800 text-xs">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -45,7 +35,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
             <ul className="space-y-2">
               <li>
                 <button
-                  onClick={() => handleNav('beranda')}
+                  onClick={() => onNavigate('beranda')}
                   className="hover:text-emerald-400 transition-colors text-left cursor-pointer"
                 >
                   Beranda (Rangkuman Essay)
@@ -53,7 +43,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
               </li>
               <li>
                 <button
-                  onClick={() => handleNav('simulasi')}
+                  onClick={() => onNavigate('simulasi')}
                   className="hover:text-emerald-400 transition-colors text-left cursor-pointer"
                 >
                   Simulasi (Page Terpisah)
@@ -61,7 +51,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
               </li>
               <li>
                 <button
-                  onClick={() => handleNav('metopen')}
+                  onClick={() => onNavigate('metopen')}
                   className="hover:text-emerald-400 transition-colors text-left cursor-pointer"
                 >
                   Metopen (Page Terpisah)
@@ -69,7 +59,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
               </li>
               <li>
                 <button
-                  onClick={() => handleNav('tim-kami')}
+                  onClick={() => onNavigate('tim-kami')}
                   className="hover:text-emerald-400 transition-colors text-left cursor-pointer"
                 >
                   Tim Kami (Page Terpisah)
@@ -98,11 +88,11 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
         {/* Bottom Bar */}
         <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-slate-500">
           <div>
-            © 2026 SILICA2CON · Universitas Negeri Semarang. Seluruh hak cipta dilindungi.
+            © 2026 GEOCEDS · Universitas Negeri Semarang. Seluruh hak cipta dilindungi.
           </div>
 
           <button
-            onClick={scrollToTop}
+            onClick={onScrollToTop}
             className="flex items-center gap-1.5 text-xs text-slate-400 hover:text-white transition-colors cursor-pointer"
             aria-label="Kembali ke atas"
           >
