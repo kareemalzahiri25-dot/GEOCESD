@@ -9,6 +9,8 @@ export interface TeamMember {
   focus: string;
   isPlaceholder?: boolean;
   email?: string;
+  instagram?: string;
+  github?: string;
   phone?: string;
   location?: string;
   iconColor: string;
@@ -25,6 +27,9 @@ export const TEAM_MEMBERS: TeamMember[] = [
     isLecturer: false,
     focus: 'Arsitektur DSS, Evidence Classification Engine, Algoritma Decision Pipeline, & Antarmuka Interaktif',
     iconColor: 'bg-emerald-100 text-emerald-800',
+    email: 'dhamar@students.unnes.ac.id',
+    instagram: 'https://instagram.com',
+    github: 'https://github.com',
   },
   {
     name: 'Aditya Kusuma Wardana',
@@ -36,7 +41,7 @@ export const TEAM_MEMBERS: TeamMember[] = [
     isLecturer: false,
     focus: 'Karakterisasi Residu Geothermal, Analisis Mutu SNI 03-0691-1996, Formulasi Adukan Sementisius, & Neraca Massa',
     email: 'adityakusuma@students.unnes.ac.id',
-    phone: '0851 2905 6595',
+    instagram: 'https://instagram.com',
     location: 'Banyumas / Semarang, Jawa Tengah',
     iconColor: 'bg-blue-100 text-blue-800',
   },
@@ -51,6 +56,8 @@ export const TEAM_MEMBERS: TeamMember[] = [
     focus: 'Eksperimen Laboratorium, Pengujian Sifat Mekanis & Validasi Data Pozzolanik Residu Geothermal (Data Menyusul)',
     isPlaceholder: true,
     iconColor: 'bg-teal-100 text-teal-800',
+    email: 'mahasiswa@students.unnes.ac.id',
+    instagram: 'https://instagram.com',
   },
   {
     name: 'Nama Dosen Pembimbing',
@@ -61,7 +68,7 @@ export const TEAM_MEMBERS: TeamMember[] = [
     roleBadge: 'Dosen Pembimbing',
     isLecturer: true,
     focus: 'Supervisi Riset Ilmiah, Validasi Metodologi Material Konstruksi, Bimbingan Penulisan & Arah Kebijakan Inovasi (Data Menyusul)',
-    isPlaceholder: true,
+    isPlaceholder: false,
     iconColor: 'bg-amber-100 text-amber-900',
   },
 ];

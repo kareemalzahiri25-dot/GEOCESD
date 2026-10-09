@@ -1,6 +1,7 @@
 import React from 'react';
 import { PageId } from '../../models/silica.model';
 import { HeroSectionView } from '../sections/HeroSectionView';
+import { AlurEvaluasiSectionView } from '../sections/AlurEvaluasiSectionView';
 import { ProblemSectionView } from '../sections/ProblemSectionView';
 import { ArchitectureSectionView } from '../sections/ArchitectureSectionView';
 import { Sparkles, BookOpen, Users, ChevronRight, TrendingUp } from 'lucide-react';
@@ -14,6 +15,9 @@ export const HomeLandingPageView: React.FC<HomeLandingPageViewProps> = ({ onNavi
     <div className="w-full">
       {/* 1. HERO SECTION WITH INDONESIAN MOUNTAIN BACKGROUND */}
       <HeroSectionView onNavigate={onNavigate} />
+
+      {/* ALUR EVALUASI WORKFLOW (DARI DATA HINGGA KEPUTUSAN) */}
+      <AlurEvaluasiSectionView />
 
       {/* 2. RANGKUMAN ESSAY - LONG-SCROLL LANDING PAGE */}
       <section id="ringkasan-essay" className="py-20 bg-slate-50 border-t border-slate-200">

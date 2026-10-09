@@ -1,17 +1,17 @@
 import React from 'react';
-import { Cpu, ArrowUp } from 'lucide-react';
+import { Cpu } from 'lucide-react';
 import { PageId } from '../../models/silica.model';
 
 interface FooterViewProps {
   onNavigate: (page: PageId) => void;
-  onScrollToTop: () => void;
+  onScrollToTop?: () => void;
 }
 
-export const FooterView: React.FC<FooterViewProps> = ({ onNavigate, onScrollToTop }) => {
+export const FooterView: React.FC<FooterViewProps> = ({ onNavigate }) => {
   return (
-    <footer className="bg-slate-900 text-slate-400 py-14 border-t border-slate-800 text-xs">
+    <footer className="bg-slate-900 text-slate-400 py-12 border-t border-slate-800 text-xs">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-8 pb-12 border-b border-slate-800">
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-8">
           {/* Brand & Abstract */}
           <div className="md:col-span-5 space-y-4">
             <div className="flex items-center gap-3">
@@ -83,22 +83,11 @@ export const FooterView: React.FC<FooterViewProps> = ({ onNavigate, onScrollToTo
               <div className="text-emerald-400">Email: adityakusuma@students.unnes.ac.id</div>
             </div>
           </div>
-        </div>
 
-        {/* Bottom Bar */}
-        <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-slate-500">
-          <div>
+          {/* Credit dimasukkan ke dalam frame atas */}
+          <div className="md:col-span-12 pt-6 border-t border-slate-800 text-slate-500 text-left">
             © 2026 GEOCEDS · Universitas Negeri Semarang. Seluruh hak cipta dilindungi.
           </div>
-
-          <button
-            onClick={onScrollToTop}
-            className="flex items-center gap-1.5 text-xs text-slate-400 hover:text-white transition-colors cursor-pointer"
-            aria-label="Kembali ke atas"
-          >
-            <span>Kembali ke Atas</span>
-            <ArrowUp className="w-4 h-4" />
-          </button>
         </div>
       </div>
     </footer>

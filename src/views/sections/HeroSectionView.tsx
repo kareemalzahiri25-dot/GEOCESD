@@ -9,18 +9,17 @@ interface HeroSectionViewProps {
 export const HeroSectionView: React.FC<HeroSectionViewProps> = ({ onNavigate }) => {
   return (
     <section className="relative pt-28 pb-16 md:pt-36 md:pb-24 overflow-hidden bg-slate-50">
-      {/* Indonesian Mountain Background (Gunung Sindoro & Dataran Tinggi Dieng) */}
+      {/* Indonesian Mountain Background (Dataran Tinggi Dieng) */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none select-none -z-0">
         <img
-          src="/images/gunung_indonesia.svg"
-          alt="Latar Belakang Gunung Indonesia - Gunung Sindoro dan Dataran Tinggi Dieng Jawa Tengah"
-          className="w-full h-full object-cover object-bottom opacity-75"
+          src="/images/dieng.png"
+          alt="Latar Belakang Dataran Tinggi Dieng Jawa Tengah"
+          className="w-full h-full object-cover object-center opacity-90"
           loading="eager"
-          referrerPolicy="no-referrer"
         />
-        {/* Subtle Scrim Gradient to ensure high text contrast and legibility */}
-        <div className="absolute inset-0 bg-gradient-to-r from-white/95 via-white/80 to-white/30" />
-        <div className="absolute inset-0 bg-gradient-to-b from-white/90 via-transparent to-white" />
+        {/* Subtle Scrim to ensure crisp typography while keeping mountain landscape clear and vibrant */}
+        <div className="absolute inset-0 bg-gradient-to-r from-white/80 via-white/35 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-b from-white/40 via-transparent to-slate-50/80" />
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">

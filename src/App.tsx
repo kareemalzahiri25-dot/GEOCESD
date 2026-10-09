@@ -53,8 +53,10 @@ export default function App() {
         )}
       </main>
 
-      {/* View: Footer */}
-      <FooterView onNavigate={navigateTo} onScrollToTop={scrollToTop} />
+      {/* View: Footer (hanya ditampilkan pada halaman beranda) */}
+      {currentPage === 'beranda' && (
+        <FooterView onNavigate={navigateTo} onScrollToTop={scrollToTop} />
+      )}
     </div>
   );
 }
