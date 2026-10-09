@@ -3,6 +3,47 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script>
+      (function () {
+        try {
+          var currentFetch = window.fetch ? window.fetch.bind(window) : undefined;
+          var desc = Object.getOwnPropertyDescriptor(window, 'fetch') || Object.getOwnPropertyDescriptor(Window.prototype, 'fetch');
+          if (desc && desc.configurable) {
+            Object.defineProperty(window, 'fetch', {
+              configurable: true,
+              enumerable: true,
+              get: function () {
+                return currentFetch;
+              },
+              set: function (fn) {
+                if (typeof fn === 'function') {
+                  currentFetch = fn;
+                }
+              }
+            });
+          }
+        } catch (e) {
+          // Ignore descriptor modification errors if non-configurable
+        }
+
+        window.addEventListener(
+          'error',
+          function (event) {
+            var msg = event && event.message ? String(event.message) : '';
+            var file = event && event.filename ? String(event.filename) : '';
+            if (
+              file.indexOf('chrome-extension://') === 0 ||
+              msg.indexOf('Cannot set property fetch of #<Window>') !== -1
+            ) {
+              event.stopImmediatePropagation();
+              event.preventDefault();
+              return false;
+            }
+          },
+          true
+        );
+      })();
+    </script>
     <title>SILICA2CON - Evidence-Based Decision Support System</title>
     <meta name="description" content="Evidence-Based Decision Support System untuk Transformasi Residu Geothermal Menjadi Material Konstruksi Berkelanjutan." />
     <meta property="og:title" content="SILICA2CON - Evidence-Based Decision Support System" />
