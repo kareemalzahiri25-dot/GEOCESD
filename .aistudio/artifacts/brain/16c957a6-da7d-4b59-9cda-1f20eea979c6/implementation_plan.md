@@ -1,123 +1,85 @@
-# Audit GitHub Pages & Routing — SILICA2CON
+# Diagnosis & Solusi Layar Putih pada GitHub Pages (`kareemalzahiri25-dot.github.io/GEOCESD/`)
 
-Laporan audit teknis kesiapan hosting proyek React + TypeScript + Vite **SILICA2CON** pada **GitHub Pages** beserta rencana implementasi bertahap berdasarkan preferensi yang telah dikonfirmasi.
+Penjelasan akar masalah mengapa halaman `https://kareemalzahiri25-dot.github.io/GEOCESD/` menampilkan layar putih dan rencana teknis agar aplikasi langsung tampil tanpa error.
 
 ### User Review & Critical Decisions
 
 > [!IMPORTANT]
-> **Status Kesiapan GitHub Pages Saat Ini: `PERLU KONFIGURASI`**
-> Berdasarkan audit kode aktual, aplikasi saat ini belum mengatur `base` path untuk subpath repository (`/GEOCESD/`), masih menggunakan path absolut `/images/...` untuk gambar di `public/images/`, menggunakan state memori murni tanpa sinkronisasi URL, dan belum memiliki workflow `.github/workflows/` untuk deployment otomatis ke GitHub Pages.
+> **Akar Penyebab Layar Putih Teridentifikasi 100%:**
+> Saat ini pengaturan **Settings → Pages → Build and deployment → Source** di GitHub Anda masih diatur ke **"Deploy from a branch" (`main` / folder `/ (root)`)**.
+>
+> Akibatnya, GitHub Pages menyajikan file `index.html` **mentah (belum di-build)** dari root repository yang berisi `<script type="module" src="/src/main.tsx"></script>`. Browser **tidak bisa** mengeksekusi file TypeScript/JSX (`.tsx`) secara langsung dan path `/src/main.tsx` mengarah ke `https://kareemalzahiri25-dot.github.io/src/main.tsx` (404 Not Found), sehingga hanya menampilkan `<div id="root"></div>` kosong (layar putih).
 
-- **Keputusan Terkonfirmasi 1 (Target URL Hosting)**: **Subpath Repository (`username.github.io/GEOCESD/`)** — Konfigurasi `base` Vite dan seluruh referensi asset publik (`public/images/*`) akan dibuat kompatibel dengan subpath maupun root preview.
-- **Keputusan Terkonfirmasi 2 (Strategi Routing & Refresh)**: **Hash Routing Ringan (`#/simulasi`, `#/metopen`, `#/tim-kami`)** — Menggunakan sinkronisasi `window.location.hash` dan event `hashchange` di dalam controller navigasi yang sudah ada tanpa menambah library eksternal dan tanpa risiko error 404 pada GitHub Pages saat akses URL langsung atau refresh halaman.
-
----
-
-### 1. Laporan Hasil Audit (6 Poin Wajib)
-
-#### 1. Routing Saat Ini: Mekanisme dan File yang Terlibat
-- **Mekanisme**: Navigasi berbasis **state React di memori (`useState<PageId>('beranda')`)**, **bukan** menggunakan `react-router-dom`.
-- **File yang Terlibat**:
-  - Entry point React (`index.html` baris 59 → `src/main.tsx` baris 5) me-render `<App />` secara langsung tanpa provider router.
-  - `package.json` (baris 12–21) tidak memuat `react-router` atau `react-router-dom`.
-  - `src/App.tsx` (baris 17–24 & 39–54) memanggil `useNavigationController('beranda')` dan melakukan conditional rendering untuk 4 halaman (`beranda`, `simulasi`, `metopen`, `tim-kami`).
-  - `src/controllers/useNavigationController.ts` (baris 13–52) menyimpan `currentPage` di `useState`, dan fungsi `navigateTo(page, sectionId)` hanya mengubah state React serta memanggil `window.scrollTo` atau `scrollIntoView` tanpa mengubah URL browser (`window.location`).
-- **Dampak pada URL & Refresh**:
-  - URL browser tidak berubah saat pengguna berpindah ke halaman **Simulasi**, **Metopen**, atau **Tim Kami**.
-  - Halaman selain Beranda tidak memiliki URL langsung yang dapat dibagikan atau di-bookmark, dan setiap kali pengguna menekan **Refresh (F5)** pada halaman Simulasi atau Metopen, aplikasi selalu kembali ke halaman **Beranda**.
-
-#### 2. Kesiapan GitHub Pages
-- **Status**: **`PERLU KONFIGURASI`**
-
-#### 3. Temuan Masalah Nyata Beserta Bukti Kode
-1. **Tidak Ada Konfigurasi `base` pada Vite (`vite.config.ts` baris 6–25)**:
-   - `defineConfig` tidak mendefinisikan properti `base`. Secara default Vite menggunakan `base: '/'`. Jika di-deploy ke subpath GitHub Pages (`https://<username>.github.io/GEOCESD/`), browser akan meminta `/assets/index-*.js` dan `/assets/index-*.css` dari root domain `https://<username>.github.io/assets/...` yang menghasilkan **404 Not Found dan halaman putih (blank page)**.
-2. **Hardcoded Root Path `/images/...` pada Asset Gambar Statis**:
-   - `src/views/sections/HeroSectionView.tsx` (baris 15): `src="/images/dieng.png"`
-   - `src/models/team.model.ts` (baris 36, 52, 68, 82): `avatarUrl: '/images/a.jpg'`, `'/images/i.jpg'`, `'/images/iel.jpg'`, `'/images/dosen.jpg'`
-   - `src/views/pages/HomeLandingPageView.tsx` (baris 259, 279, 299): `img: '/images/sdgs9.png'`, `'/images/sdgs11.png'`, `'/images/sdgs12.png'`
-   - Pada Vite, string path di dalam JSX/TS yang diawali `/` tidak otomatis ditambahkan prefix `base` saat build. Di subpath GitHub Pages (`/GEOCESD/`), gambar-gambar tersebut akan mengarah ke `https://<username>.github.io/images/...` dan gagal dimuat (404). Menggunakan path relatif atau `import.meta.env.BASE_URL` akan memastikan gambar dimuat dengan benar baik di lokal/AI Studio maupun di GitHub Pages.
-3. **Reset Halaman Saat Refresh & Ketiadaan Deep-Link Halaman (`src/controllers/useNavigationController.ts` baris 14 & 29–42)**:
-   - Karena `currentPage` diinisialisasi statis ke `'beranda'` dan tidak membaca/menulis `window.location.hash`, pengguna tidak dapat membuka `#/simulasi` atau `#/metopen` secara langsung dan akan kehilangan halaman aktif saat melakukan refresh.
-4. **Belum Ada Workflow GitHub Actions (`.github/workflows/`)**:
-   - Hasil pemeriksaan direktori root menunjukkan belum ada folder `.github/workflows/` untuk menjalankan `npm ci && npm run build` dan mempublikasikan artefak `dist/` ke GitHub Pages secara otomatis.
-
-#### 4. Perbaikan Minimum yang Disarankan (Urutan Prioritas)
-1. **Prioritas 1 — Konfigurasi `base` Dinamis/Relatif di `vite.config.ts`**:
-   - Gunakan `base: './'` (atau `process.env.GITHUB_PAGES === 'true' ? '/GEOCESD/' : '/'`) agar bundle JS/CSS di `dist/index.html` bekerja di subpath GitHub Pages `/GEOCESD/` sekaligus tetap berjalan normal di preview AI Studio (`/`).
-2. **Prioritas 2 — Normalisasi Path Gambar `public/images/*` dengan `import.meta.env.BASE_URL` (atau Path Relatif)**:
-   - Ganti `/images/...` menjadi `${import.meta.env.BASE_URL}images/...` (atau `images/...`) pada `HeroSectionView.tsx`, `HomeLandingPageView.tsx`, dan `team.model.ts` agar seluruh gambar tetap tampil di subpath GitHub Pages.
-3. **Prioritas 3 — Sinkronisasi Hash Routing Ringan di `useNavigationController.ts`**:
-   - Sinkronkan `currentPage` (`beranda`, `simulasi`, `metopen`, `tim-kami`) dengan `window.location.hash` (`#/beranda`, `#/simulasi`, `#/metopen`, `#/tim-kami`) serta dukung anchor bagian di Beranda (mis. `#ringkasan-essay`, `#alur-evaluasi`).
-   - Karena berbasis hash (`#/...`), GitHub Pages selalu melayani `index.html` utama tanpa memerlukan hack redirect `404.html` dan tidak pernah menghasilkan HTTP 404 saat refresh atau bookmark.
-4. **Prioritas 4 — Penambahan Workflow Deployment `.github/workflows/deploy.yml`**:
-   - Tambahkan workflow standar GitHub Actions (`actions/configure-pages`, `actions/upload-pages-artifact`, `actions/deploy-pages`) yang mem-build folder `dist` pada branch utama.
-
-#### 5. Area yang Perlu Diubah (Jika Disetujui untuk Implementasi)
-- Konfigurasi build Vite (pengaturan `base` URL).
-- Controller navigasi aplikasi (sinkronisasi state `currentPage` dengan URL hash `#/simulasi`, `#/metopen`, `#/tim-kami`).
-- Tiga lokasi referensi gambar statis (Hero, SDGs di Beranda, dan profil Tim).
-- Workflow CI/CD GitHub Pages untuk otomasi build dan deploy ke `dist`.
-
-#### 6. Informasi yang Masih Kurang / Perlu DikonfirmasiSaat Deploy di GitHub
-- **Nama Branch Utama Repository**: Workflow akan dikonfigurasi mendukung `main` (dan `master`) secara otomatis, namun pada pengaturan GitHub Repository (**Settings → Pages → Build and deployment**), sumber (*Source*) perlu diatur ke **GitHub Actions**.
+- **Keputusan Terkonfirmasi 1**: Target URL adalah `https://kareemalzahiri25-dot.github.io/GEOCESD/`.
+- **Keputusan Terkonfirmasi 2**: Agar GitHub Pages menampilkan hasil kompilasi Vite (`dist/`), workflow perlu mendukung baik mode **GitHub Actions** maupun **Branch `gh-pages`** secara otomatis, serta path entry script di `index.html` diubah menjadi relatif (`./src/main.tsx`).
 
 ---
 
-### 2. User Experience & Visual Design
+### 1. Mengapa Layar Putih Terjadi? (Alur Masalah Saat Ini)
 
-- **Alur Navigasi & URL Langsung**:
-  - Membuka `.../GEOCESD/` atau `.../GEOCESD/#/` menampilkan **Beranda**.
-  - Klik menu **Simulasi** mengubah URL menjadi `.../GEOCESD/#/simulasi`; menekan tombol **Refresh** atau membuka bookmark URL tersebut langsung memuat halaman **Simulasi** tanpa error 404.
-  - Klik menu **Metopen** mengubah URL menjadi `.../GEOCESD/#/metopen`; menekan **Refresh** tetap mempertahankan halaman **Metopen**.
-  - Klik menu **Tim Kami** mengubah URL menjadi `.../GEOCESD/#/tim-kami`; menekan **Refresh** tetap mempertahankan halaman **Tim Kami**.
-  - Tombol **Back / Forward** pada browser berfungsi secara alami mengikuti riwayat perpindahan halaman.
+```
+┌───────────────────────────────────────────────────────────────────────────┐
+│  KONDISI SAAT INI (Settings > Pages > Source: Deploy from branch `main`)  │
+├───────────────────────────────────────────────────────────────────────────┤
+│  1. Pengunjung membuka https://kareemalzahiri25-dot.github.io/GEOCESD/    │
+│  2. GitHub Pages mengirim file mentah `/index.html` (bukan `/dist`)       │
+│  3. `/index.html` meminta `<script src="/src/main.tsx">`                  │
+│  4. Browser gagal memuat `/src/main.tsx` (404 & MIME type bukan JS)       │
+│  5. `<div id="root"></div>` tetap kosong → LAYAR PUTIH                    │
+└───────────────────────────────────────────────────────────────────────────┘
+```
+
+---
+
+### 2. Solusi Lengkap & Langkah Perbaikan
+
+Agar link `https://kareemalzahiri25-dot.github.io/GEOCESD/` langsung berjalan baik menggunakan pengaturan **GitHub Actions** maupun **Deploy from a branch**:
+
+1. **Perbaikan Konfigurasi Proyek (Otomatis oleh Kami)**:
+   - **Normalisasi Entry Script di `index.html`**: Mengubah `<script type="module" src="/src/main.tsx"></script>` menjadi `<script type="module" src="./src/main.tsx"></script>` agar Vite selalu me-resolve entry point secara relatif terhadap lokasi `index.html`.
+   - **Menambahkan File `.nojekyll` di `public/`**: Memastikan GitHub Pages tidak memblokir atau memproses ulang file statis hasil build Vite.
+   - **Menambahkan Dukungan Dual-Deploy di Workflow GitHub Actions (`.github/workflows/deploy.yml`)**:
+     - Mem-publish hasil build `./dist` ke branch **`gh-pages`** secara otomatis (menggunakan `peaceiris/actions-gh-pages@v4`) sekaligus mendukung **GitHub Actions Pages** resmi.
+     - Menambahkan script `"deploy"` di `package.json` jika Anda ingin menjalankan deploy langsung dari terminal lokal.
+
+2. **Langkah 1-Klik di Pengaturan GitHub Anda (Setelah Kode Di-push ke GitHub)**:
+   - Pastikan perubahan dari AI Studio sudah di-**push / sync** ke repository GitHub `kareemalzahiri25-dot/GEOCESD`.
+   - Buka repository GitHub Anda → klik tab **Settings** → menu **Pages** (di sidebar kiri).
+   - Pada bagian **Build and deployment → Source**:
+     - **Cara Paling Mudah (Direkomendasikan)**: Ubah dropdown **Source** dari *Deploy from a branch* menjadi **GitHub Actions**, **ATAU**
+     - Jika tetap memilih *Deploy from a branch*, ubah branch dari `main` menjadi **`gh-pages` / `/ (root)`** lalu klik **Save**.
 
 ---
 
 ### 3. Key Product Decisions & Trade-Offs
 
-- **Decision 1: Hash Routing (`#/simulasi`, `#/metopen`) di Dalam `useNavigationController`**
-  - *Chosen Approach*: Memperluas hook `useNavigationController` yang sudah ada dengan parser hash URL dan listener `hashchange` tanpa mengubah prop/kontrak komponen `App.tsx`, `NavbarView.tsx`, `SimulasiPageView.tsx`, maupun `MetopenPageView.tsx`.
-  - *Why*: Nol dependensi tambahan, nol perubahan pada komponen UI/engine Simulasi dan Metopen, serta 100% bebas masalah 404 pada static host seperti GitHub Pages.
-  - *Alternatives Considered*: History API (`/simulasi`) + duplikasi `404.html` (membutuhkan script redirect query string di `index.html` dan rentan masalah path asset relatif).
-- **Decision 2: `base: './'` + Helper Asset `import.meta.env.BASE_URL`**
-  - *Chosen Approach*: Mengatur `base: './'` di Vite (atau subpath dinamis) dan menggunakan prefix `import.meta.env.BASE_URL` untuk file di `public/images/`.
-  - *Why*: Menjamin hasil build `dist/` bersifat *path-agnostic* sehingga berfungsi baik di `https://<username>.github.io/GEOCESD/`, di custom domain, maupun di preview server lokal port 3000.
+- **Decision 1: Dual Support (`GitHub Actions` + Branch `gh-pages`)**
+  - *Chosen Approach*: Mengonfigurasi workflow agar mem-build `dist/` dan mendorong hasilnya ke branch `gh-pages` sekaligus menyediakan job deploy GitHub Pages.
+  - *Why*: Banyak pengguna GitHub tetap menggunakan mode *Deploy from a branch*. Dengan tersedianya branch `gh-pages` yang berisi file `index.html` + `assets/*.js` yang sudah terkompilasi, Anda tidak akan pernah mengalami layar putih akibat ter-deploy-nya kode mentah `.tsx` dari branch `main`.
+- **Decision 2: Penambahan `public/.nojekyll` & `404.html` Fallback**
+  - *Chosen Approach*: Menyertakan file `.nojekyll` kosong di `public/` agar ikut tersalin ke `dist/.nojekyll` setiap kali `npm run build` dijalankan.
+  - *Why*: Mencegah pemrosesan Jekyll di GitHub Pages yang sering menyebabkan keterlambatan atau kegagalan pemuatan asset.
 
 ---
 
-### 4. Technical Architecture & Data Strategy *(Rencana Implementasi Bertahap)*
+### 4. Technical Architecture & Deployment Flow
 
 ```
-┌─────────────────────────────────────────────────────────────────────────┐
-│                    Browser URL & GitHub Pages Host                      │
-│        https://<username>.github.io/GEOCESD/#/metopen (or #/simulasi)   │
-└───────────────────────────────────┬─────────────────────────────────────┘
-                                    │
-                                    ▼
-┌─────────────────────────────────────────────────────────────────────────┐
-│                  useNavigationController (Hash Sync)                    │
-│  • parseHashToPage(): '#/simulasi' → 'simulasi'                         │
-│                       '#/metopen'  → 'metopen'                          │
-│                       '#/tim-kami' → 'tim-kami'                         │
-│  • window.addEventListener('hashchange') ↔ setCurrentPage(page)         │
-└───────────────────────────────────┬─────────────────────────────────────┘
-                                    │
-          ┌─────────────────────────┼─────────────────────────┐
-          ▼                         ▼                         ▼
-┌───────────────────┐     ┌───────────────────┐     ┌───────────────────┐
-│HomeLandingPageView│     │ SimulasiPageView  │     │  MetopenPageView  │
-│ (Asset BASE_URL)  │     │ (Isolated Engine) │     │ (Isolated Method) │
-└───────────────────┘     └───────────────────┘     └───────────────────┘
+┌───────────────────────────────────────────────────────────────────────────┐
+│                    ALUR DEPLOYMENT SETELAH PERBAIKAN                      │
+├───────────────────────────────────────────────────────────────────────────┤
+│  Push ke `main`                                                           │
+│       │                                                                   │
+│       ▼                                                                   │
+│  GitHub Actions menjalankan `npm ci && GITHUB_PAGES=true npm run build`   │
+│       │                                                                   │
+│       ├──► Menghasilkan folder `dist/` berisi:                            │
+│       │      • dist/index.html (script menunjuk ke ./assets/index-*.js)   │
+│       │      • dist/.nojekyll                                             │
+│       │      • dist/images/*                                              │
+│       │                                                                   │
+│       ▼                                                                   │
+│  Dipublikasikan ke `https://kareemalzahiri25-dot.github.io/GEOCESD/`      │
+│  (Melalui Source: GitHub Actions ATAU Branch: `gh-pages`)                 │
+└───────────────────────────────────────────────────────────────────────────┘
 ```
-
-#### Tahapan Implementasi (Menunggu Persetujuan Anda)
-1. **Tahap 1 — Konfigurasi Vite & Path Asset Publik**:
-   - Atur `base` pada konfigurasi Vite dan pastikan semua referensi gambar di `public/images/` menggunakan `import.meta.env.BASE_URL` agar bebas 404 di subpath `/GEOCESD/`.
-2. **Tahap 2 — Sinkronisasi Hash Routing di Controller Navigasi**:
-   - Tambahkan pembacaan hash awal (`#/simulasi`, `#/metopen`, `#/tim-kami`, serta anchor section Beranda) dan sinkronisasi `window.location.hash` + event `hashchange` di `useNavigationController`.
-3. **Tahap 3 — Workflow GitHub Actions Deployment**:
-   - Buat konfigurasi workflow GitHub Pages untuk build (`npm run build`) dan deploy folder `dist` secara otomatis.
-4. **Tahap 4 — Verifikasi Build & Lint**:
-   - Jalankan `npm run lint` dan `npm run build` untuk memastikan output `dist/` bersih dan siap dipublikasikan.
