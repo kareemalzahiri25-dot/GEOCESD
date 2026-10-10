@@ -15,6 +15,7 @@ import { OverviewStageView } from '../simulasi/OverviewStageView';
 import { CharacterizationStageView } from '../simulasi/CharacterizationStageView';
 import { FormulationStageView } from '../simulasi/FormulationStageView';
 import { CandidateAnalysisStageView } from '../simulasi/CandidateAnalysisStageView';
+import { TechnicalGateStageView } from '../simulasi/TechnicalGateStageView';
 
 interface SimulasiPageViewProps {
   onBackToHome: () => void;
@@ -518,8 +519,19 @@ export const SimulasiPageView: React.FC<SimulasiPageViewProps> = ({
                     displayDecision={displayDecision}
                     evidenceLabel={evidenceLabel}
                   />
+                ) : currentStageMeta.id === 'gate' ? (
+                  <TechnicalGateStageView
+                    study={study}
+                    characterization={characterization}
+                    mix={mix}
+                    studyMode={studyMode}
+                    onUpdateMixField={updateMixField}
+                    onSelectStage={selectStage}
+                    displayDecision={displayDecision}
+                    evidenceLabel={evidenceLabel}
+                  />
                 ) : (
-                  /* Clearly Marked Stage Content Placeholder (Stages 05 - 08) */
+                  /* Clearly Marked Stage Content Placeholder (Stages 06 - 08) */
                   <div
                     data-testid="stage-placeholder-notice"
                     className="rounded-xl sm:rounded-2xl bg-slate-50 border border-dashed border-slate-300 p-4 sm:p-6 md:p-8 space-y-2.5 sm:space-y-3"
