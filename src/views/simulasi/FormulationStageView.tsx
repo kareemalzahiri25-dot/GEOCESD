@@ -14,6 +14,8 @@ import {
   ArrowLeft,
   TestTube2,
   Scale,
+  Table2,
+  Check,
 } from 'lucide-react';
 import {
   defaultMix,
@@ -274,6 +276,179 @@ export const FormulationStageView: React.FC<FormulationStageViewProps> = ({
   const massBalanceStatus = mass.status;
   const qualification = study.science.materialQualification;
   const formulationSpace = study.science.formulationSpace;
+  const doePlan = study.science.doePlan;
+
+  // Canonical DOE 5-candidate matrix rows (supporting study.science.doePlan.rows if present, or strictly projecting canonical 0% control M0-CTRL + M1-M4 from canonical literaturePoints & doePlan without inventing experimental values)
+  type CanonicalDoeCandidateRow = {
+    id: string;
+    role: 'CONTROL' | 'LOW' | 'CENTER' | 'MID_HIGH' | 'HIGH' | string;
+    roleLabel: string;
+    isCenter: boolean;
+    substitutionPct: number | null;
+    cementSharePct: number | null;
+    residueSharePct: number | null;
+    waterRatio: number | null;
+    targetParticleSizeUm: number | null;
+    evidenceAnchor: string | null;
+  };
+
+  const rawDoePlanWithRows = doePlan as typeof doePlan & {
+    rows?: Array<{
+      id?: string;
+      role?: string;
+      substitutionPct?: number | null;
+      cementSharePct?: number | null;
+      cementPct?: number | null;
+      residueSharePct?: number | null;
+      residuePct?: number | null;
+      waterRatio?: number | null;
+      wbRatio?: number | null;
+      particleSizeUm?: number | null;
+      targetParticleSizeUm?: number | null;
+      evidenceAnchor?: string | null;
+      isCenter?: boolean;
+    }>;
+  };
+
+  const measuredParticleFactorLevel =
+    doePlan.factors
+      .find((f) => f.key === 'particleSizeUm')
+      ?.levels.find((l) => l.label === 'CENTER') ?? null;
+
+  const measuredParticleUm = measuredParticleFactorLevel?.value ?? null;
+  const targetParticleUm = formulationSpace.activeCandidate.particleSizeUm;
+
+  const hasParticleSizeMismatch =
+    measuredParticleUm !== null &&
+    Number.isFinite(measuredParticleUm) &&
+    Number.isFinite(targetParticleUm) &&
+    Math.abs(measuredParticleUm - targetParticleUm) > 1e-6;
+
+  const canonicalDoeRows: CanonicalDoeCandidateRow[] = (() => {
+    if (Array.isArray(rawDoePlanWithRows.rows)) {
+      return rawDoePlanWithRows.rows.map((r, idx) => {
+        const sub =
+          typeof r.substitutionPct === 'number' &&
+          Number.isFinite(r.substitutionPct)
+            ? r.substitutionPct
+            : null;
+        const cem =
+          typeof r.cementSharePct === 'number'
+            ? r.cementSharePct
+            : typeof r.cementPct === 'number'
+            ? r.cementPct
+            : sub !== null
+            ? Math.max(0, 100 - sub)
+            : null;
+        const res =
+          typeof r.residueSharePct === 'number'
+            ? r.residueSharePct
+            : typeof r.residuePct === 'number'
+            ? r.residuePct
+            : sub;
+        const roleRaw = r.role ?? (idx === 0 ? 'CONTROL' : `CANDIDATE_${idx}`);
+        const isCenter =
+          Boolean(r.isCenter) ||
+          String(roleRaw).toUpperCase().includes('CENTER');
+        return {
+          id: r.id ?? (idx === 0 ? 'M0-CTRL' : `M${idx}`),
+          role: roleRaw,
+          roleLabel: String(roleRaw),
+          isCenter,
+          substitutionPct: sub,
+          cementSharePct: cem,
+          residueSharePct: res,
+          waterRatio:
+            r.waterRatio !== undefined
+              ? r.waterRatio
+              : r.wbRatio !== undefined
+              ? r.wbRatio
+              : mix.waterRatio,
+          targetParticleSizeUm:
+            r.targetParticleSizeUm !== undefined
+              ? r.targetParticleSizeUm
+              : r.particleSizeUm !== undefined
+              ? r.particleSizeUm
+              : mix.particleSize,
+          evidenceAnchor: r.evidenceAnchor ?? null,
+        };
+      });
+    }
+
+    // When doePlan.rows is not pre-populated on the runtime object, project the 5 canonical candidates strictly from study.literaturePoints & study.science.doePlan factors (never inventing candidate percentages if canonical literaturePoints are empty)
+    if (!study.literaturePoints || study.literaturePoints.length === 0) {
+      return [];
+    }
+
+    const sortedPoints = [...study.literaturePoints].sort(
+      (a, b) => a.replacement - b.replacement
+    );
+    const subFactorLevels =
+      doePlan.factors.find((f) => f.key === 'substitutionPct')?.levels ?? [];
+    const lowVal =
+      subFactorLevels.find((l) => l.label === 'LOW')?.value ?? null;
+    const centerVal =
+      subFactorLevels.find((l) => l.label === 'CENTER')?.value ?? null;
+    const highVal =
+      subFactorLevels.find((l) => l.label === 'HIGH')?.value ?? null;
+    const sourceId = study.evidenceSource?.id ?? 'SRC-017';
+
+    return sortedPoints.slice(0, 5).map((pt, index) => {
+      const sub = pt.replacement;
+      const isCtrl = sub === 0;
+      const id = isCtrl ? 'M0-CTRL' : `M${index}`;
+
+      let role = 'VARIATION';
+      let roleLabel = 'Variasi Kandidat';
+      let isCenter = false;
+
+      if (isCtrl) {
+        role = 'CONTROL';
+        roleLabel = 'CONTROL (Kontrol 0%)';
+      } else if (lowVal !== null && sub === lowVal) {
+        role = 'LOW';
+        roleLabel = 'LOW (Batas Bawah Literatur)';
+      } else if (highVal !== null && sub === highVal) {
+        role = 'HIGH';
+        roleLabel = 'HIGH (Batas Atas Literatur)';
+      } else if (
+        (centerVal !== null && sub === centerVal) ||
+        index === 2
+      ) {
+        role = 'CENTER';
+        roleLabel =
+          centerVal !== null && sub !== centerVal
+            ? `CENTER (Titik Tengah Diskrit · Midpoint DOE ${centerVal}%)`
+            : 'CENTER (Titik Pusat Kandidat)';
+        isCenter = true;
+      } else {
+        role = 'INTERMEDIATE';
+        roleLabel = 'INTERMEDIATE (Variasi Menengah)';
+      }
+
+      const anchorLevel = subFactorLevels.find((l) => l.value === sub);
+      const evidenceAnchor = isCtrl
+        ? `${sourceId} · Baseline Kontrol 0% (${pt.age})`
+        : anchorLevel
+        ? `${sourceId} · ${anchorLevel.evidence} (${anchorLevel.label} ${sub}%, ${pt.age})`
+        : `${sourceId} · LITERATURE_SUPPORTED (Titik Diskrit ${sub}%, ${pt.age})`;
+
+      return {
+        id,
+        role,
+        roleLabel,
+        isCenter,
+        substitutionPct: sub,
+        cementSharePct: Math.max(0, 100 - sub),
+        residueSharePct: sub,
+        waterRatio: Number.isFinite(mix.waterRatio) ? mix.waterRatio : null,
+        targetParticleSizeUm: Number.isFinite(mix.particleSize)
+          ? mix.particleSize
+          : null,
+        evidenceAnchor,
+      };
+    });
+  })();
 
   // Canonical 0% control mass balance computed via engine massBalance() using the exact same canonical batch & geometry inputs
   const initialCementKg =
@@ -1351,6 +1526,291 @@ export const FormulationStageView: React.FC<FormulationStageViewProps> = ({
                   Massa per blok: Perlu Densitas (tidak menggunakan densitas
                   asumsi)
                 </span>
+              )}
+            </div>
+          </div>
+
+          {/* Card 6: Canonical 5-Candidate DOE Matrix */}
+          <div
+            className="rounded-xl border border-slate-200 bg-white p-4 sm:p-5 space-y-4"
+            data-testid="doe-candidate-matrix-card"
+          >
+            <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-2 pb-3 border-b border-slate-100">
+              <div>
+                <div className="text-[11px] font-mono font-bold uppercase tracking-wider text-emerald-700 flex items-center gap-1.5">
+                  <Table2 className="w-3.5 h-3.5 shrink-0" />
+                  <span>
+                    Matriks Rancangan Eksperimen (DOE) · Lima Kandidat Kanonik
+                  </span>
+                </div>
+                <h2 className="text-sm sm:text-base font-bold text-slate-900 mt-0.5">
+                  Matriks Kandidat Formulasi (`M0-CTRL` & `M1–M4`)
+                </h2>
+                <p className="text-xs text-slate-500 mt-0.5">
+                  Disusun dari rencana DOE kanonik engine ({doePlan.design}) dan
+                  jangkar bukti literatur paving langsung. Tidak mengarang hasil
+                  eksperimen, jumlah replikasi, atau klaim optimum.
+                </p>
+              </div>
+
+              <div className="flex flex-wrap items-center gap-1.5 shrink-0">
+                <span
+                  className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-md text-xs font-mono font-bold border ${
+                    doePlan.status === 'READY_FOR_DESIGN'
+                      ? 'bg-emerald-50 text-emerald-900 border-emerald-200'
+                      : 'bg-amber-50 text-amber-900 border-amber-200'
+                  }`}
+                  data-testid="doe-plan-status-badge"
+                >
+                  {doePlan.status === 'READY_FOR_DESIGN' ? (
+                    <CheckCircle2 className="w-3.5 h-3.5 text-emerald-700 shrink-0" />
+                  ) : (
+                    <AlertTriangle className="w-3.5 h-3.5 text-amber-700 shrink-0" />
+                  )}
+                  <span>{doePlan.status}</span>
+                </span>
+                <span
+                  className="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-mono font-semibold bg-slate-100 text-slate-700 border border-slate-200"
+                  data-testid="doe-model-status-badge"
+                >
+                  {doePlan.model.status}
+                </span>
+              </div>
+            </div>
+
+            {/* Stage 02 vs Stage 03 Particle Size Mismatch Warning (when measured PSD from Stage 02 differs from Stage 03 target PSD) */}
+            {hasParticleSizeMismatch && (
+              <div
+                className="rounded-xl border border-amber-200 bg-amber-50 p-3.5 text-xs text-amber-900 flex items-start gap-2.5"
+                data-testid="doe-particle-mismatch-warning"
+              >
+                <AlertTriangle className="w-4 h-4 text-amber-700 shrink-0 mt-0.5" />
+                <div className="space-y-1 leading-relaxed">
+                  <div className="font-bold">
+                    Perbedaan Ukuran Partikel Karakterisasi Tahap 02 vs Target
+                    Formulasi Tahap 03
+                  </div>
+                  <p>
+                    Ukuran partikel terukur pada Tahap 02 (
+                    <strong className="font-mono">{measuredParticleUm} µm</strong>
+                    ) berbeda dengan target ukuran partikel formulasi pada Tahap
+                    03 (
+                    <strong className="font-mono">{targetParticleUm} µm</strong>
+                    ). Pastikan tahapan pra-pemrosesan (penggilingan/pengayakan)
+                    disesuaikan untuk mencapai target ukuran partikel kandidat.
+                  </p>
+                </div>
+              </div>
+            )}
+
+            {/* Empty State Handling */}
+            {canonicalDoeRows.length === 0 ? (
+              <div
+                className="rounded-xl border border-dashed border-slate-300 bg-slate-50 p-6 text-center space-y-1.5"
+                data-testid="doe-matrix-empty-state"
+              >
+                <div className="text-xs font-bold text-slate-800">
+                  Data Kandidat DOE Belum Tersedia (`DATA_REQUIRED`)
+                </div>
+                <p className="text-xs text-slate-500 max-w-lg mx-auto leading-relaxed">
+                  Engine belum memiliki baris kandidat DOE maupun titik
+                  literatur langsung untuk membentuk matriks lima kandidat.
+                  Sistem tidak membuat kandidat sintetis atau mengarang nilai
+                  substitusi.
+                </p>
+              </div>
+            ) : (
+              <div className="overflow-x-auto -mx-4 sm:mx-0 px-4 sm:px-0">
+                <table
+                  className="w-full min-w-[780px] text-left border-collapse text-xs"
+                  data-testid="doe-candidate-matrix-table"
+                >
+                  <thead>
+                    <tr className="border-b border-slate-200 bg-slate-50/90 text-[11px] font-mono uppercase tracking-wider text-slate-600">
+                      <th className="py-2.5 px-3 font-bold">ID</th>
+                      <th className="py-2.5 px-3 font-bold">Peran Kandidat</th>
+                      <th className="py-2.5 px-3 font-bold text-right">
+                        Substitusi (%)
+                      </th>
+                      <th className="py-2.5 px-3 font-bold text-right">
+                        Porsi Semen (%)
+                      </th>
+                      <th className="py-2.5 px-3 font-bold text-right">
+                        Porsi Residu (%)
+                      </th>
+                      <th className="py-2.5 px-3 font-bold text-right">W/B</th>
+                      <th className="py-2.5 px-3 font-bold text-right">
+                        Target Partikel (µm)
+                      </th>
+                      <th className="py-2.5 px-3 font-bold">Evidence Anchor</th>
+                      <th className="py-2.5 px-3 font-bold text-right">
+                        Aksi Formulasi
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-slate-100">
+                    {canonicalDoeRows.map((row) => {
+                      const isRowActive =
+                        row.substitutionPct !== null &&
+                        Math.abs(mix.substitution - row.substitutionPct) < 1e-6;
+                      const isControlRow = row.id === 'M0-CTRL' || row.role === 'CONTROL';
+
+                      const rowBgClass = row.isCenter
+                        ? 'bg-emerald-50/70 text-slate-900'
+                        : isControlRow
+                        ? 'bg-sky-50/40 text-slate-900'
+                        : 'bg-white text-slate-800';
+
+                      return (
+                        <tr
+                          key={row.id}
+                          className={`${rowBgClass} transition-colors`}
+                          data-testid={`doe-row-${row.id}`}
+                        >
+                          <td className="py-2.5 px-3 font-mono font-bold whitespace-nowrap">
+                            <div className="flex items-center gap-1.5">
+                              <span>{row.id}</span>
+                              {row.isCenter && (
+                                <span
+                                  className="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-mono font-bold bg-emerald-700 text-white"
+                                  data-testid={`doe-center-badge-${row.id}`}
+                                >
+                                  CENTER
+                                </span>
+                              )}
+                            </div>
+                          </td>
+
+                          <td className="py-2.5 px-3">
+                            <span
+                              className={`inline-flex items-center px-2 py-0.5 rounded text-[11px] font-mono font-semibold border ${
+                                row.isCenter
+                                  ? 'bg-emerald-100/90 text-emerald-950 border-emerald-300 font-bold'
+                                  : isControlRow
+                                  ? 'bg-sky-100/80 text-sky-900 border-sky-200'
+                                  : 'bg-slate-100 text-slate-700 border-slate-200'
+                              }`}
+                            >
+                              {row.roleLabel}
+                            </span>
+                          </td>
+
+                          <td
+                            className="py-2.5 px-3 font-mono font-bold text-right tabular-nums text-slate-900"
+                            data-testid={`doe-sub-${row.id}`}
+                          >
+                            {row.substitutionPct !== null
+                              ? `${row.substitutionPct}%`
+                              : 'DATA_REQUIRED'}
+                          </td>
+
+                          <td
+                            className="py-2.5 px-3 font-mono text-right tabular-nums text-slate-700"
+                            data-testid={`doe-cement-${row.id}`}
+                          >
+                            {row.cementSharePct !== null
+                              ? `${Number(row.cementSharePct.toFixed(2))}%`
+                              : 'DATA_REQUIRED'}
+                          </td>
+
+                          <td
+                            className="py-2.5 px-3 font-mono text-right tabular-nums text-emerald-800 font-semibold"
+                            data-testid={`doe-residue-${row.id}`}
+                          >
+                            {row.residueSharePct !== null
+                              ? `${Number(row.residueSharePct.toFixed(2))}%`
+                              : 'DATA_REQUIRED'}
+                          </td>
+
+                          <td
+                            className="py-2.5 px-3 font-mono text-right tabular-nums text-slate-700"
+                            data-testid={`doe-wb-${row.id}`}
+                          >
+                            {row.waterRatio !== null
+                              ? row.waterRatio
+                              : 'DATA_REQUIRED'}
+                          </td>
+
+                          <td
+                            className="py-2.5 px-3 font-mono text-right tabular-nums text-slate-700"
+                            data-testid={`doe-particle-${row.id}`}
+                          >
+                            {row.targetParticleSizeUm !== null
+                              ? `${row.targetParticleSizeUm} µm`
+                              : 'DATA_REQUIRED'}
+                          </td>
+
+                          <td
+                            className="py-2.5 px-3 text-[11px] font-mono text-slate-600"
+                            data-testid={`doe-anchor-${row.id}`}
+                          >
+                            {row.evidenceAnchor ?? 'NOT_DEFINED'}
+                          </td>
+
+                          <td className="py-2.5 px-3 text-right whitespace-nowrap">
+                            <button
+                              type="button"
+                              disabled={row.substitutionPct === null}
+                              onClick={() => {
+                                if (row.substitutionPct !== null) {
+                                  onUpdateMixField(
+                                    'substitution',
+                                    row.substitutionPct
+                                  );
+                                }
+                              }}
+                              data-testid={`doe-apply-${row.id}`}
+                              className={`inline-flex items-center justify-center gap-1.5 px-2.5 py-1.5 min-h-[32px] rounded-lg text-[11px] font-semibold transition-colors cursor-pointer ${
+                                row.substitutionPct === null
+                                  ? 'bg-slate-100 text-slate-400 cursor-not-allowed'
+                                  : isRowActive
+                                  ? 'bg-emerald-700 text-white border border-emerald-700'
+                                  : 'bg-white hover:bg-emerald-50 text-emerald-800 border border-emerald-300'
+                              }`}
+                            >
+                              {isRowActive ? (
+                                <>
+                                  <Check className="w-3 h-3 shrink-0" />
+                                  <span>Digunakan ({row.substitutionPct}%)</span>
+                                </>
+                              ) : (
+                                <span>Gunakan % Ini</span>
+                              )}
+                            </button>
+                          </td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+              </div>
+            )}
+
+            {/* Canonical DOE Notes & Model Path from Engine */}
+            <div
+              className="rounded-xl border border-slate-200 bg-slate-50/80 p-3.5 space-y-2.5 text-xs"
+              data-testid="doe-engine-notes"
+            >
+              <div className="flex flex-wrap items-center justify-between gap-2">
+                <span className="font-bold text-slate-800 flex items-center gap-1.5">
+                  <Info className="w-3.5 h-3.5 text-emerald-700 shrink-0" />
+                  <span>Catatan Rancangan Eksperimen (DOE) Kanonik Engine</span>
+                </span>
+                <span className="font-mono text-[11px] text-slate-600">
+                  Jalur Model: {doePlan.model.path.join(' → ')}
+                </span>
+              </div>
+
+              <p className="text-[11px] text-slate-600 leading-relaxed">
+                {doePlan.model.note}
+              </p>
+
+              {doePlan.notes.length > 0 && (
+                <ul className="list-disc list-inside space-y-1 text-[11px] text-slate-600 leading-relaxed pt-1 border-t border-slate-200/80">
+                  {doePlan.notes.map((note, idx) => (
+                    <li key={idx}>{note}</li>
+                  ))}
+                </ul>
               )}
             </div>
           </div>
