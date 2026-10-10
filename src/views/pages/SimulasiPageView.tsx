@@ -11,6 +11,9 @@ import {
   Compass,
 } from 'lucide-react';
 import { useSimulationController } from '../../controllers/useSimulationController';
+import { OverviewStageView } from '../simulasi/OverviewStageView';
+import { CharacterizationStageView } from '../simulasi/CharacterizationStageView';
+import { FormulationStageView } from '../simulasi/FormulationStageView';
 
 interface SimulasiPageViewProps {
   onBackToHome: () => void;
@@ -38,6 +41,19 @@ export const SimulasiPageView: React.FC<SimulasiPageViewProps> = ({
     toggleSidebarCollapse,
     openMobileStageSelector,
     closeMobileStageSelector,
+    studyMode,
+    datasetId,
+    demoDatasets,
+    selectDemoDataset,
+    characterization,
+    updateCharacterizationField,
+    mix,
+    setMix,
+    updateMixField,
+    study,
+    datasetLabel,
+    displayDecision,
+    evidenceLabel,
   } = useSimulationController();
 
   const previousStage = hasPreviousStage
@@ -454,27 +470,65 @@ export const SimulasiPageView: React.FC<SimulasiPageViewProps> = ({
                   </div>
                 </div>
 
-                {/* Clearly Marked Stage Content Placeholder (Phase 1) */}
-                <div
-                  data-testid="stage-placeholder-notice"
-                  className="rounded-xl sm:rounded-2xl bg-slate-50 border border-dashed border-slate-300 p-4 sm:p-6 md:p-8 space-y-2.5 sm:space-y-3"
-                >
-                  <div className="flex flex-wrap items-center gap-1.5 text-xs font-semibold text-emerald-800">
-                    <Clock className="w-4 h-4 text-emerald-600 shrink-0" />
-                    <span>
-                      Placeholder Fase 1 · Tahap {currentStageMeta.stageNumber} (
-                      {currentStageMeta.title})
-                    </span>
+                {/* Stage Content Area */}
+                {currentStageMeta.id === 'overview' ? (
+                  <OverviewStageView
+                    study={study}
+                    characterization={characterization}
+                    mix={mix}
+                    studyMode={studyMode}
+                    datasetId={datasetId}
+                    datasetLabel={datasetLabel}
+                    workflowStages={workflowStages}
+                    onSelectStage={selectStage}
+                    displayDecision={displayDecision}
+                    evidenceLabel={evidenceLabel}
+                  />
+                ) : currentStageMeta.id === 'characterization' ? (
+                  <CharacterizationStageView
+                    study={study}
+                    characterization={characterization}
+                    studyMode={studyMode}
+                    datasetId={datasetId}
+                    demoDatasets={demoDatasets}
+                    onSelectDemoDataset={selectDemoDataset}
+                    onUpdateField={updateCharacterizationField}
+                    onSelectStage={selectStage}
+                    evidenceLabel={evidenceLabel}
+                  />
+                ) : currentStageMeta.id === 'formulation' ? (
+                  <FormulationStageView
+                    mix={mix}
+                    setMix={setMix}
+                    onUpdateMixField={updateMixField}
+                    study={study}
+                    studyMode={studyMode}
+                    onSelectStage={selectStage}
+                    evidenceLabel={evidenceLabel}
+                  />
+                ) : (
+                  /* Clearly Marked Stage Content Placeholder (Stages 03 - 08) */
+                  <div
+                    data-testid="stage-placeholder-notice"
+                    className="rounded-xl sm:rounded-2xl bg-slate-50 border border-dashed border-slate-300 p-4 sm:p-6 md:p-8 space-y-2.5 sm:space-y-3"
+                  >
+                    <div className="flex flex-wrap items-center gap-1.5 text-xs font-semibold text-emerald-800">
+                      <Clock className="w-4 h-4 text-emerald-600 shrink-0" />
+                      <span>
+                        Placeholder Fase 1 · Tahap {currentStageMeta.stageNumber}{' '}
+                        ({currentStageMeta.title})
+                      </span>
+                    </div>
+
+                    <h2 className="text-sm sm:text-base md:text-lg font-bold text-slate-900 leading-snug">
+                      Area Konten Interaktif Tahap {currentStageMeta.title}
+                    </h2>
+
+                    <p className="text-xs sm:text-sm text-slate-600 leading-relaxed max-w-3xl">
+                      {currentStageMeta.placeholderNotice}
+                    </p>
                   </div>
-
-                  <h2 className="text-sm sm:text-base md:text-lg font-bold text-slate-900 leading-snug">
-                    Area Konten Interaktif Tahap {currentStageMeta.title}
-                  </h2>
-
-                  <p className="text-xs sm:text-sm text-slate-600 leading-relaxed max-w-3xl">
-                    {currentStageMeta.placeholderNotice}
-                  </p>
-                </div>
+                )}
 
                 {/* Sequential Stage Footer Navigation */}
                 <div className="pt-4 border-t border-slate-200 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-2.5 sm:gap-3">
