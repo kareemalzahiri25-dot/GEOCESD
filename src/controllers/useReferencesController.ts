@@ -8,13 +8,16 @@ export function useReferencesController() {
   const [selectedCategory, setSelectedCategory] = useState<ReferenceCategory>('All');
 
   const filteredReferences = useMemo(() => {
+    const query = searchQuery.toLowerCase();
     return SCIENTIFIC_REFERENCES.filter((item) => {
       const matchCategory =
         selectedCategory === 'All' || item.category === selectedCategory;
       const matchSearch =
-        item.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        item.authors.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        item.keyPoint.toLowerCase().includes(searchQuery.toLowerCase());
+        item.title.toLowerCase().includes(query) ||
+        item.authors.toLowerCase().includes(query) ||
+        item.keyPoint.toLowerCase().includes(query) ||
+        (item.sourceId ? item.sourceId.toLowerCase().includes(query) : false) ||
+        (item.doi ? item.doi.toLowerCase().includes(query) : false);
       return matchCategory && matchSearch;
     });
   }, [searchQuery, selectedCategory]);

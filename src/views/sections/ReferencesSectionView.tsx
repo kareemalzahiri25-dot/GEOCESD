@@ -47,34 +47,54 @@ export const ReferencesSectionView: React.FC = () => {
 
       {/* References List */}
       <div className="space-y-4">
-        {filteredReferences.map((item, idx) => (
-          <div
-            key={idx}
-            className="p-5 rounded-xl border border-slate-200 hover:border-emerald-300 transition-colors bg-slate-50/50 flex flex-col md:flex-row md:items-start justify-between gap-4"
-          >
-            <div className="space-y-1.5 flex-1">
-              <div className="text-xs font-medium text-slate-500">
-                {item.authors} ({item.year})
-              </div>
-              <div className="text-sm font-bold text-slate-900 leading-snug">
-                {item.title}
-              </div>
-              <div className="text-xs text-slate-600 italic">
-                {item.source}
-              </div>
-              <div className="mt-2 text-xs text-emerald-900 bg-emerald-50/80 p-2.5 rounded-lg border border-emerald-200/60">
-                <strong className="font-semibold">Relevansi GEOCEDS: </strong>
-                {item.keyPoint}
-              </div>
-            </div>
+        {filteredReferences.map((item) => {
+          const hasValidDoi = Boolean(
+            item.doi && item.doi.trim() !== '' && item.doi.trim() !== '—'
+          );
 
-            <div className="shrink-0 flex md:flex-col items-center justify-between gap-2">
-              <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-slate-200/80 text-slate-700">
-                {item.category}
-              </span>
+          return (
+            <div
+              key={`${item.sourceId ?? 'REF'}-${item.year}-${item.title}`}
+              className="p-5 rounded-xl border border-slate-200 hover:border-emerald-300 transition-colors bg-slate-50/50 flex flex-col md:flex-row md:items-start justify-between gap-4"
+            >
+              <div className="space-y-1.5 flex-1">
+                <div className="flex flex-wrap items-center gap-2 text-xs font-medium text-slate-500">
+                  <span>
+                    {item.authors} ({item.year})
+                  </span>
+                  {item.sourceId && (
+                    <span className="text-[10px] font-mono font-semibold px-2 py-0.5 rounded bg-teal-50 text-teal-800 border border-teal-200">
+                      {item.sourceId}
+                    </span>
+                  )}
+                </div>
+                <div className="text-sm font-bold text-slate-900 leading-snug">
+                  {item.title}
+                </div>
+                <div className="text-xs text-slate-600 italic">
+                  {item.source}
+                </div>
+                {hasValidDoi && (
+                  <div className="pt-0.5">
+                    <code className="text-[11px] font-mono text-slate-600 bg-white px-2 py-0.5 rounded border border-slate-200">
+                      DOI: {item.doi}
+                    </code>
+                  </div>
+                )}
+                <div className="mt-2 text-xs text-emerald-900 bg-emerald-50/80 p-2.5 rounded-lg border border-emerald-200/60">
+                  <strong className="font-semibold">Relevansi GEOCEDS: </strong>
+                  {item.keyPoint}
+                </div>
+              </div>
+
+              <div className="shrink-0 flex md:flex-col items-center md:items-end justify-between gap-2">
+                <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-slate-200/80 text-slate-700">
+                  {item.category}
+                </span>
+              </div>
             </div>
-          </div>
-        ))}
+          );
+        })}
 
         {filteredReferences.length === 0 && (
           <div className="text-center py-12 text-sm text-slate-500">

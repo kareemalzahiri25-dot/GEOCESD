@@ -33,7 +33,7 @@ export const TEAM_MEMBERS: TeamMember[] = [
     instagram: 'https://instagram.com',
     location: 'Banyumas / Semarang, Jawa Tengah',
     iconColor: 'bg-emerald-100 text-emerald-800',
-    avatarUrl: '/images/a.jpg',
+    avatarUrl: `${import.meta.env.BASE_URL}images/a.jpg`,
   },
   {
     name: 'Dhamar Firdaus Esa Mahendra',
@@ -49,7 +49,7 @@ export const TEAM_MEMBERS: TeamMember[] = [
     email: 'dhamar@students.unnes.ac.id',
     instagram: 'https://instagram.com',
     github: 'https://github.com',
-    avatarUrl: '/images/i.jpg',
+    avatarUrl: `${import.meta.env.BASE_URL}images/i.jpg`,
   },
   {
     name: 'Adita Azril Akbar',
@@ -65,7 +65,7 @@ export const TEAM_MEMBERS: TeamMember[] = [
     iconColor: 'bg-teal-100 text-teal-800',
     email: 'aditaazril@students.unnes.ac.id',
     instagram: 'https://instagram.com',
-    avatarUrl: '/images/iel.jpg',
+    avatarUrl: `${import.meta.env.BASE_URL}images/iel.jpg`,
   },
   {
     name: 'Alan Riski Rio Ardian, S.T., M.T.',
@@ -79,6 +79,6 @@ export const TEAM_MEMBERS: TeamMember[] = [
     focus: 'Supervisi Riset Ilmiah, Validasi Metodologi Material Konstruksi, Bimbingan Penulisan & Arah Kebijakan Inovasi',
     isPlaceholder: false,
     iconColor: 'bg-amber-100 text-amber-900',
-    avatarUrl: '/images/dosen.jpg',
+    avatarUrl: `${import.meta.env.BASE_URL}images/dosen.jpg`,
   },
 ];

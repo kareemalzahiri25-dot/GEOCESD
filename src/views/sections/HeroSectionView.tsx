@@ -12,7 +12,7 @@ export const HeroSectionView: React.FC<HeroSectionViewProps> = ({ onNavigate }) 
       {/* Indonesian Mountain Background (Dataran Tinggi Dieng) */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none select-none -z-0">
         <img
-          src="/images/dieng.png"
+          src={`${import.meta.env.BASE_URL}images/dieng.png`}
           alt="Latar Belakang Dataran Tinggi Dieng Jawa Tengah"
           className="w-full h-full object-cover object-center opacity-90"
           loading="eager"

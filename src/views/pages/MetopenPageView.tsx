@@ -33,15 +33,6 @@ export const MetopenPageView: React.FC<MetopenPageViewProps> = ({ onBackToHome }
               <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 mt-1 tracking-tight">
                 Metodologi Closed-Loop, DOE, RSM &amp; Provenance Data
               </h1>
-              <p className="mt-2 text-xs sm:text-sm text-slate-600 max-w-3xl leading-relaxed">
-                Halaman khusus yang membedah arsitektur saintifik di balik sistem GEOCEDS secara mendalam, termasuk daftar pustaka primer.
-              </p>
-            </div>
-
-            <div className="shrink-0">
-              <span className="text-xs font-mono font-medium text-slate-500 bg-slate-100 px-3 py-1.5 rounded-lg border border-slate-200">
-                Status: Pratinjau Antarmuka Modul
-              </span>
             </div>
           </div>
         </div>
